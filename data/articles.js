@@ -45,13 +45,19 @@ const ARTICLES = [
   },
   {
     id: "cyber-hygiene-2026",
+    slug: "cyber-hygiene-2026",
     title: "Cyber Hygiene 2026: 7 Habits That Actually Protect You",
     excerpt: "Forget paranoia. These seven practical, low-effort habits block the vast majority of real-world attacks.",
     category: "cyber",
     tags: ["security", "privacy", "passwords"],
     author: "Umair R.",
     date: "2026-08-06",
+    updated: "2026-08-11",
     readTime: 8,
+    references: [
+      { label: "CISA — Cybersecurity best practices", url: "https://www.cisa.gov/cybersecurity" },
+      { label: "NIST — Digital Identity Guidelines", url: "https://pages.nist.gov/800-63-3/" }
+    ],
     emoji: "🛡️",
     cover: "🛡️",
     featured: true,
@@ -436,13 +442,19 @@ const ARTICLES = [
   },
   {
     id: "ai-for-beginners-plain-english",
+    slug: "ai-for-beginners-plain-english",
     title: "AI for Beginners: What a Language Model Actually Is (in Plain English)",
     excerpt: "You don't need a math degree to understand AI. A plain-English explainer of what language models are, what they're good at, and where they fail.",
     category: "ai",
     tags: ["ai basics", "llm explained", "beginners", "machine learning", "chatgpt"],
     author: "InfoVibe Desk",
     date: "2026-08-11",
+    updated: "2026-08-11",
     readTime: 7,
+    references: [
+      { label: "Google — How AI works (overview)", url: "https://ai.google/discover/howaiworks/" },
+      { label: "OpenAI — Terms & safety", url: "https://openai.com/policies/" }
+    ],
     emoji: "🧠",
     cover: "🧠",
     featured: false,

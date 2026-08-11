@@ -378,6 +378,146 @@ const ARTICLES = [
       <p><i>InfoVibe analysis. Themes reflect widely reported 2026 industry discussion; this is original commentary written for InfoVibe readers.</i></p>
     `,
   },
+  {
+    id: "phishing-red-flags-2026",
+    title: "Phishing Red Flags: 7 Signs a Message Is Trying to Steal Your Account",
+    excerpt: "Phishing still fools even careful people. Here are the seven signals that give almost every scam email, text, or call away — and what to do instead.",
+    category: "cyber",
+    tags: ["phishing", "scams", "email security", "awareness", "protect yourself"],
+    author: "InfoVibe Desk",
+    date: "2026-08-11",
+    readTime: 6,
+    emoji: "🎣",
+    cover: "🎣",
+    featured: false,
+    trending: false,
+    body: `
+      <p>Every year defenders ship smarter filters, and every year attackers get a little more convincing. But phishing has a tell. The scams that actually work rely on a handful of repeated tricks — and once you know them, they are much easier to spot. Here are seven red flags worth memorizing.</p>
+
+      <h2>1. Fake urgency</h2>
+      <p>"Your account will be closed in 24 hours." "Confirm now or lose access." Pressure is the scammer's favorite tool because it short-circuits thinking. Real companies rarely demand instant action under threat.</p>
+
+      <h2>2. A sender that is almost right</h2>
+      <p><code>microsft-support.com</code>, <code>paypa1.com</code>, <code>your-bank-alert.net</code> — look one character off a real domain. Hover before you click; the visible name means nothing, the actual address does.</p>
+
+      <h2>3. Asks for secrets</h2>
+      <p>No legitimate service emails you for your password, PIN, or one-time code. The moment a message requests a secret, it is a scam — full stop.</p>
+
+      <ul class="bullets">
+        <li><b>One-time codes</b> are the new gold for thieves; never read one aloud to a "support" caller.</li>
+        <li><b>Links inside urgency</b> almost always lead to a look-alike login page.</li>
+      </ul>
+
+      <h2>4. Too good to be true</h2>
+      <p>Unexpected prizes, refunds, or jobs that pay well for little work are classic lures. Greed and fear are the two emotions scams push hardest.</p>
+
+      <blockquote>"If a message makes you panic or grin in the first three seconds, slow down before you tap."</blockquote>
+
+      <h2>5. Vague greeting</h2>
+      <p>"Dear customer" from a company that knows your name is a small tell, but not proof. Combined with the others, it adds up.</p>
+
+      <h2>6. Strange attachments</h2>
+      <p>An invoice you didn't expect, a voicemail file, a shipping label — opening these can drop malware. When in doubt, log in to the real site directly instead.</p>
+
+      <h2>7. A mismatch between story and channel</h2>
+      <p>Your bank texts you about a call it never made. A boss emails a request that breaks how they normally write. Attacks often feel slightly off because they are improvised.</p>
+
+      <h2>What to do instead</h2>
+      <ul class="bullets">
+        <li>Open a new tab and go to the site yourself — never through the message's link.</li>
+        <li>Verify with the company through a number you already trust.</li>
+        <li>Turn on passkeys and MFA so a stolen password alone can't sink you.</li>
+      </ul>
+
+      <p>None of this requires special tools. It requires a half-second pause and a habit of checking the address, not the urgency. That pause is the whole defense.</p>
+
+      <p><i>InfoVibe security guide. General awareness advice consistent with widely published anti-phishing guidance; original writing, not a reproduction of any source.</i></p>
+    `,
+  },
+  {
+    id: "ai-for-beginners-plain-english",
+    title: "AI for Beginners: What a Language Model Actually Is (in Plain English)",
+    excerpt: "You don't need a math degree to understand AI. A plain-English explainer of what language models are, what they're good at, and where they fail.",
+    category: "ai",
+    tags: ["ai basics", "llm explained", "beginners", "machine learning", "chatgpt"],
+    author: "InfoVibe Desk",
+    date: "2026-08-11",
+    readTime: 7,
+    emoji: "🧠",
+    cover: "🧠",
+    featured: false,
+    trending: false,
+    body: `
+      <p>Artificial intelligence is everywhere in the news and almost nowhere in plain explanation. If you have used a chatbot and wondered how it works, this is for you. No equations — just the shape of the idea.</p>
+
+      <h2>It predicts the next word</h2>
+      <p>At its core, a modern language model is very good at one party trick: given some text, guess what comes next. Do that a billion times and you get a reply that sounds like a person. It is not "thinking" the way we do; it is completing patterns it learned from a huge amount of reading.</p>
+
+      <blockquote>"A language model is a brilliant guesser of what word should follow the last one — not a brain, but a mirror of human writing."</blockquote>
+
+      <h2>What that means in practice</h2>
+      <ul class="bullets">
+        <li><b>It is fluent</b> because it has seen how fluent text is shaped.</li>
+        <li><b>It can be wrong confidently</b> because guessing well and being right are not the same thing.</li>
+        <li><b>It has no memory of you</b> between sessions unless the product saves it.</li>
+      </ul>
+
+      <h2>Where it helps</h2>
+      <p>Drafting, summarizing, renaming, brainstorming, translating, explaining. Anything that starts from "turn this text into that text" is a natural fit. It is a tireless first draft, not a final authority.</p>
+
+      <h2>Where it fails</h2>
+      <p>It can invent facts (people call these "hallucinations"), it can't truly verify live events, and it reflects the biases in what it read. Treat its output as a starting point you check, not gospel.</p>
+
+      <h2>A simple rule</h2>
+      <p>If the cost of being wrong is low, let it help. If the cost is high — medical, legal, financial — you stay the decision-maker. The best users treat AI like a fast, confident intern: useful, but never the one who signs off.</p>
+
+      <p>The more you use it, the more you learn its rhythm. Start small, stay skeptical, and let it take the boring first pass while you keep the judgment.</p>
+
+      <p><i>InfoVibe explainer. Conceptual description of language models; original educational writing, not a reproduction of any source.</i></p>
+    `,
+  },
+  {
+    id: "why-web-speed-matters",
+    title: "Why Web Speed Matters: A Fast Site Is a Trusted Site",
+    excerpt: "Page speed is not just a technical metric — it shapes whether visitors stay, trust, and buy. A plain guide to why milliseconds matter and what to fix first.",
+    category: "tech",
+    tags: ["web performance", "page speed", "core web vitals", "ux", "seo"],
+    author: "InfoVibe Desk",
+    date: "2026-08-11",
+    readTime: 6,
+    emoji: "⚡",
+    cover: "⚡",
+    featured: false,
+    trending: false,
+    body: `
+      <p>A slow website feels broken even when it isn't. Visitors don't read a speed report — they feel the lag, decide the site is untrustworthy, and leave. Speed is the first impression, and it is made in under two seconds.</p>
+
+      <h2>What slowness costs</h2>
+      <ul class="bullets">
+        <li><b>Attention:</b> most people abandon a page that doesn't respond quickly.</li>
+        <li><b>Trust:</b> a sluggish site reads as neglected, which rubs off on the brand.</li>
+        <li><b>Reach:</b> search engines factor speed into rankings, so slow sites are also harder to find.</li>
+      </ul>
+
+      <blockquote>"Performance is a feature. The fastest site isn't the one with the most code — it's the one that gets out of the way."</blockquote>
+
+      <h2>The three numbers worth knowing</h2>
+      <p>Modern web performance boils down to a few user-centered metrics: how fast the page starts showing content, how soon it becomes usable, and how stable the layout feels while loading. You don't need to memorize names — you need to care that the page feels instant.</p>
+
+      <h2>What to fix first</h2>
+      <ul class="bullets">
+        <li><b>Shrink images.</b> Oversized photos are the most common culprit; modern formats and right-sized dimensions help most.</li>
+        <li><b>Trim the extras.</b> Every script, font, and tracker is a tax on load time.</li>
+        <li><b>Cache smartly.</b> Repeat visits should be near-instant.</li>
+        <li><b>Host close.</b> A fast global host (like a CDN) cuts the wait for distant visitors.</li>
+      </ul>
+
+      <h2>The takeaway</h2>
+      <p>Speed is not vanity — it is the difference between a visitor who stays and one who bounces. The good news is most gains come from a short list of boring, repeatable fixes. Treat performance as a habit, not a one-time cleanup, and the site stays quick as it grows.</p>
+
+      <p><i>InfoVibe guide. General web-performance principles; original writing, not a reproduction of any source.</i></p>
+    `,
+  },
 ];
 
 // Make available to other scripts

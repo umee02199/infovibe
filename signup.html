@@ -4,6 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up — InfoVibe</title>
+  <meta name="description" content="Create your free InfoVibe account in seconds and join the community." />
+  <meta property="og:title" content="Sign Up — InfoVibe" />
+  <meta property="og:description" content="Create your free InfoVibe account." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://umee02199.github.io/infovibe/signup.html" />
+  <meta property="og:image" content="https://umee02199.github.io/infovibe/assets/img/og-default.png" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
@@ -18,7 +25,7 @@
       <form onsubmit="ivDoSignup(event)">
         <div class="field"><label>Full Name</label><input id="s-name" required placeholder="Your name" /></div>
         <div class="field"><label>Email</label><input id="s-email" type="email" required placeholder="you@email.com" /></div>
-        <div class="field"><label>Password</label><input id="s-pass" type="password" required placeholder="At least 6 characters" /></div>
+        <div class="field"><label>Password</label><input id="s-pass" type="password" required minlength="6" placeholder="At least 6 characters" /></div>
         <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center;">Create Account</button>
       </form>
       <div class="note-box"><b>Demo mode:</b> Accounts are stored only in this browser (localStorage). No server — don't reuse a real password.</div>
@@ -29,9 +36,9 @@
   <script src="assets/js/components.js"></script>
   <script src="assets/js/app.js"></script>
   <script>
-    window.ivDoSignup = function (e) {
+    window.ivDoSignup = async function (e) {
       e.preventDefault();
-      const r = ivSignup(
+      const r = await ivSignup(
         document.getElementById("s-name").value.trim(),
         document.getElementById("s-email").value.trim(),
         document.getElementById("s-pass").value

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="canonical" href="https://umee02199.github.io/infovibe/notes.html" />
+  <title>Notes — InfoVibe</title>
+  <meta name="description" content="Browse short, bite-sized study and reference notes published on InfoVibe across technology, AI, cyber security and more." />
+  <meta property="og:title" content="Notes — InfoVibe" />
+  <meta property="og:description" content="Short, bite-sized study and reference notes." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://umee02199.github.io/infovibe/notes.html" />
+  <meta property="og:image" content="https://umee02199.github.io/infovibe/assets/img/og-default.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div class="bg-blobs"><span></span><span></span><span></span></div>
+  <div data-chrome-nav></div>
+
+  <section class="section container">
+    <h1 class="section-title">📝 Study Notes</h1>
+    <p class="section-sub">Quick, bite-sized reference notes. Tap any note to read it.</p>
+    <div class="filter-bar">
+      <input id="f-search" type="text" placeholder="🔍 Search notes…" style="flex:1;min-width:200px;" />
+      <select id="f-cat"><option value="">All Categories</option></select>
+    </div>
+    <div class="grid grid-3" id="notes-grid"></div>
+    <div id="note-reader" class="note-reader" style="display:none;"></div>
+  </section>
+
+  <div data-chrome-footer></div>
+  <div data-chrome-floating></div>
+
+  <script src="assets/js/components.js"></script>
+  <script src="data/articles.js"></script>
+  <script src="data/notes.js"></script>
+  <script src="data/pdfs.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script>
+    (function () {
+      const S = window.InfoVibeStore;
+      const cats = S.getCategories();
+      const notes = S.getNotes();
+      const esc = window.esc || (s => String(s).replace(/[&<>"]/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m])));
+      document.getElementById("f-cat").innerHTML += cats.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join("");
+
+      function render() {
+        const q = document.getElementById("f-search").value.toLowerCase().trim();
+        const cat = document.getElementById("f-cat").value;
+        const list = notes.filter(n => (!cat || n.category === cat) && (!q || (n.title + " " + (n.body||"")).toLowerCase().includes(q)));
+        document.getElementById("notes-grid").innerHTML = list.length ? list.map(n => `
+          <a class="card tilt" href="#${n.id}" onclick="ivOpenNote('${n.id}')">
+            <div class="card-img"><div class="emoji">${n.emoji || "📝"}</div></div>
+            <div class="card-body">
+              <div class="tag-row"><span class="tag">${ivCat(n.category).emoji} ${ivCat(n.category).name}</span></div>
+              <h3>${esc(n.title)}</h3>
+              <div class="card-meta"><span>✍️ ${esc(n.author)}</span><span>📅 ${esc(n.date)}</span></div>
+            </div>
+          </a>`).join("") : `<p class="empty">🤔 No notes found.</p>`;
+      }
+      ["f-search","f-cat"].forEach(id => document.getElementById(id).addEventListener("input", render));
+
+      window.ivOpenNote = function (id) {
+        const n = S.getNote(id); if (!n) return;
+        const r = document.getElementById("note-reader");
+        r.innerHTML = `<div class="form-card"><a class="chip" onclick="document.getElementById('note-reader').style.display='none';location.hash='';">← Close</a>
+          <h2 style="margin:14px 0 6px;">${n.emoji || "📝"} ${esc(n.title)}</h2>
+          <div class="card-meta" style="margin-bottom:16px;"><span>✍️ ${esc(n.author)}</span><span>📅 ${esc(n.date)}</span><span class="tag">${ivCat(n.category).name}</span></div>
+          <div class="prose">${n.body}</div></div>`;
+        r.style.display = "block";
+        r.scrollIntoView({ behavior: "smooth" });
+      };
+      if (location.hash.length > 1) ivOpenNote(location.hash.slice(1));
+      render();
+    })();
+  </script>
+</body>
+</html>

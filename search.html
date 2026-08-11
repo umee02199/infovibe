@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="canonical" href="https://umee02199.github.io/infovibe/search.html" />
+  <title>Search — InfoVibe</title>
+  <meta name="description" content="Search across InfoVibe articles, notes and documents." />
+  <meta property="og:title" content="Search — InfoVibe" />
+  <meta property="og:description" content="Search across InfoVibe articles, notes and documents." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://umee02199.github.io/infovibe/search.html" />
+  <meta property="og:image" content="https://umee02199.github.io/infovibe/assets/img/og-default.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div class="bg-blobs"><span></span><span></span><span></span></div>
+  <div data-chrome-nav></div>
+
+  <section class="section container">
+    <h1 class="section-title">🔍 Search InfoVibe</h1>
+    <p class="section-sub">Find articles, notes and documents by title, keyword, category or tag.</p>
+    <div class="search-wrap big" style="margin-bottom:26px;">
+      <span class="si">🔍</span>
+      <input id="q" type="search" placeholder="Type to search…" autofocus />
+    </div>
+    <div class="filter-bar">
+      <select id="f-type"><option value="">All Types</option><option value="article">Articles</option><option value="note">Notes</option><option value="pdf">Documents</option></select>
+      <select id="f-cat"></select>
+    </div>
+    <div id="results" class="grid grid-3" style="margin-top:26px;"></div>
+  </section>
+
+  <div data-chrome-footer></div>
+  <div data-chrome-floating></div>
+
+  <script src="assets/js/components.js"></script>
+  <script src="data/articles.js"></script>
+  <script src="data/notes.js"></script>
+  <script src="data/pdfs.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script>
+    (function () {
+      const S = window.InfoVibeStore;
+      const cats = S.getCategories();
+      const esc = window.esc || (s => String(s).replace(/[&<>"]/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m])));
+      document.getElementById("f-cat").innerHTML = '<option value="">All Categories</option>' + cats.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join("");
+
+      const params = new URLSearchParams(location.search);
+      const q0 = params.get("q") || "";
+      document.getElementById("q").value = q0;
+
+      function run() {
+        const q = document.getElementById("q").value.toLowerCase().trim();
+        const type = document.getElementById("f-type").value;
+        const cat = document.getElementById("f-cat").value;
+        const out = [];
+
+        if (!type || type === "article") {
+          S.getPublishedArticles().forEach(a => {
+            if (cat && a.category !== cat) return;
+            if (q && !(`${a.title} ${a.excerpt} ${(a.tags||[]).join(" ")}`.toLowerCase().includes(q))) return;
+            out.push(`<a class="card tilt" href="article.html?id=${a.slug||a.id}"><div class="card-img"><div class="emoji">${a.cover||"📄"}</div></div><div class="card-body"><div class="tag-row"><span class="tag">📄 Article</span></div><h3>${esc(a.title)}</h3><p>${esc(a.excerpt)}</p></div></a>`);
+          });
+        }
+        if (!type || type === "note") {
+          S.getNotes().forEach(n => {
+            if (cat && n.category !== cat) return;
+            if (q && !(`${n.title} ${n.body||""}`.toLowerCase().includes(q))) return;
+            out.push(`<a class="card tilt" href="notes.html#${n.id}"><div class="card-img"><div class="emoji">${n.emoji||"📝"}</div></div><div class="card-body"><div class="tag-row"><span class="tag">📝 Note</span></div><h3>${esc(n.title)}</h3></div></a>`);
+          });
+        }
+        if (!type || type === "pdf") {
+          S.getPdfs().forEach(p => {
+            if (cat && p.category !== cat) return;
+            if (q && !(`${p.title} ${p.description||""}`.toLowerCase().includes(q))) return;
+            out.push(`<a class="card tilt" href="${esc(p.path)}" target="_blank" rel="noopener"><div class="card-img doc"><div class="emoji">${p.thumbnail||"📄"}</div></div><div class="card-body"><div class="tag-row"><span class="tag">📄 Document</span></div><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p></div></a>`);
+          });
+        }
+
+        const box = document.getElementById("results");
+        box.innerHTML = out.length ? out.join("") : `<p class="empty">🤔 No results for "${esc(q)}". Try another keyword.</p>`;
+      }
+      ["q","f-type","f-cat"].forEach(id => document.getElementById(id).addEventListener("input", run));
+      run();
+    })();
+  </script>
+</body>
+</html>

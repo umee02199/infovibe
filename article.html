@@ -28,6 +28,8 @@
 
     <div class="prose" id="a-body"></div>
 
+    <section class="related" id="a-related" aria-label="Related articles"></section>
+
     <div class="share-row" id="a-share"></div>
 
     <div class="comments" id="c-section">
@@ -132,6 +134,19 @@
       // NOTE: a.body is trusted-admin-authored HTML only (article created via admin panel, #4).
       // It is intentionally rendered as-is. Do NOT allow public/user input here.
       document.getElementById("a-body").innerHTML = a.body;
+
+      // Related articles (internal links = SEO + engagement) — same category, top 3, exclude current
+      const rel = ARTICLES.filter(x => x.id !== a.id && x.category === a.category).slice(0, 3);
+      const relEl = document.getElementById("a-related");
+      if (rel.length) {
+        relEl.innerHTML = `<h3 class="related-title">📚 Related in ${ivCat(a.category).name}</h3>` +
+          rel.map(x => `<a class="related-card" href="article.html?id=${x.id}">
+            <span class="related-emoji">${x.cover || "📄"}</span>
+            <span class="related-meta"><b>${esc(x.title)}</b><small>${x.readTime} min read</small></span>
+          </a>`).join("");
+      } else {
+        relEl.style.display = "none";
+      }
 
       const url = location.href;
       applyArticleSEO(a, url);

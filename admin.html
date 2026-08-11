@@ -3,14 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Article Admin — InfoVibe</title>
-  <meta name="description" content="InfoVibe article admin: create, edit, delete articles and upload images/PDFs." />
-  <meta property="og:title" content="Article Admin — InfoVibe" />
-  <meta property="og:description" content="Create, edit and delete articles. Upload images (jpg/png) or PDFs (max 5MB)." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://umee02199.github.io/infovibe/admin.html" />
-  <meta property="og:image" content="https://umee02199.github.io/infovibe/assets/img/og-default.png" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <title>Admin Dashboard — InfoVibe</title>
+  <meta name="description" content="InfoVibe admin: publish and manage articles, notes and PDF documents." />
+  <meta name="robots" content="noindex, nofollow" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
@@ -19,76 +14,154 @@
   <div class="bg-blobs"><span></span><span></span><span></span></div>
   <div data-chrome-nav></div>
 
-  <section class="section container">
-    <h1 class="section-title">✍️ Article Admin</h1>
-    <p class="section-sub">Create, edit and delete articles. Upload images (jpg/png) or PDFs (max 5MB).</p>
+  <section class="section container admin-shell">
+    <h1 class="section-title">⚙️ InfoVibe Admin</h1>
+    <p class="section-sub">Publish and manage articles, notes and documents. Changes save to this browser; export snippets to deploy permanently.</p>
 
     <div class="demo-banner">
-      <b>Demo mode:</b> This admin runs entirely in your browser (localStorage). Articles are NOT
-      published to the live site automatically — when you save, copy the generated code into
-      <code>data/articles.js</code> and re-deploy. No backend/database required.
+      <b>Demo mode:</b> This admin runs entirely in your browser (localStorage). Content is NOT published to the live site automatically — when you save, copy the generated code into the matching <code>data/*.js</code> file and re-deploy. No backend/database required.
     </div>
 
     <div id="login-gate"></div>
 
-    <div class="admin-grid" id="admin-ui" style="display:none;">
-      <!-- Editor -->
-      <div class="form-card">
-        <h2 id="editor-title">New Article</h2>
-        <form onsubmit="ivSaveArticle(event)">
-          <input type="hidden" id="a-edit-id" />
-          <div class="field"><label>Title</label><input id="a-title-in" required placeholder="Article title" /></div>
-          <div class="field"><label>Excerpt (short summary)</label><input id="a-excerpt-in" required placeholder="One-line summary" /></div>
-          <div class="admin-grid" style="gap:14px;">
-            <div class="field"><label>Category</label>
-              <select id="a-cat-in" required></select></div>
-            <div class="field"><label>Tags (comma separated)</label><input id="a-tags-in" placeholder="webgl, threejs" /></div>
-          </div>
-          <div class="admin-grid" style="gap:14px;">
-            <div class="field"><label>Author</label><input id="a-author-in" required placeholder="Author name" /></div>
-            <div class="field"><label>Read time (min)</label><input id="a-read-in" type="number" min="1" value="5" /></div>
-          </div>
-          <div class="field"><label>Cover emoji (e.g. 🌐)</label><input id="a-emoji-in" value="📄" maxlength="4" /></div>
+    <div id="admin-ui" style="display:none;">
+      <!-- Stats -->
+      <div class="stat-row" id="stat-row"></div>
 
-          <!-- Image / PDF upload with validation -->
-          <div class="field">
-            <label>Cover Image or PDF (jpg/png/pdf, max 5MB)</label>
-            <div class="upload-zone" id="upload-zone" onclick="document.getElementById('a-file').click()">
-              Click to upload image or PDF
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active" data-tab="articles" onclick="ivTab('articles')">📚 Articles</button>
+        <button class="tab" data-tab="notes" onclick="ivTab('notes')">📝 Notes</button>
+        <button class="tab" data-tab="pdfs" onclick="ivTab('pdfs')">📄 Documents</button>
+        <button class="tab" data-tab="cats" onclick="ivTab('cats')">🗂️ Categories</button>
+      </div>
+
+      <!-- ARTICLES TAB -->
+      <div class="tab-pane active" id="pane-articles">
+        <div class="admin-grid">
+          <div class="form-card">
+            <h2 id="art-title">New Article</h2>
+            <form onsubmit="ivSaveArticle(event)">
+              <input type="hidden" id="a-edit-id" />
+              <div class="field"><label>Title</label><input id="a-title-in" required placeholder="Article title" /></div>
+              <div class="field"><label>Short description</label><input id="a-excerpt-in" required placeholder="One-line summary" /></div>
+              <div class="admin-grid" style="gap:14px;">
+                <div class="field"><label>Category</label><select id="a-cat-in" required></select></div>
+                <div class="field"><label>Tags (comma)</label><input id="a-tags-in" placeholder="webgl, threejs" /></div>
+              </div>
+              <div class="admin-grid" style="gap:14px;">
+                <div class="field"><label>Author</label><input id="a-author-in" required placeholder="Author name" /></div>
+                <div class="field"><label>Read time (min)</label><input id="a-read-in" type="number" min="1" value="5" /></div>
+              </div>
+              <div class="field"><label>Cover emoji</label><input id="a-emoji-in" value="📄" maxlength="4" /></div>
+              <div class="field"><label>References (one per line: Label | URL)</label><textarea id="a-refs-in" placeholder="CISA — https://www.cisa.gov"></textarea></div>
+
+              <div class="field">
+                <label>Cover Image or PDF (jpg/png/pdf, max 5MB)</label>
+                <div class="upload-zone" id="upload-zone" onclick="document.getElementById('a-file').click()">Click to upload image or PDF</div>
+                <input id="a-file" type="file" accept=".jpg,.jpeg,.png,.pdf" style="display:none;" onchange="ivHandleFile(event)" />
+                <div class="upload-prev" id="upload-prev"></div>
+                <div class="err-text" id="file-err"></div>
+              </div>
+
+              <div class="field"><label>Body (HTML allowed)</label><textarea id="a-body-in" class="body" required placeholder="<p>Write your article…</p>"></textarea></div>
+
+              <div class="checks">
+                <label><input type="checkbox" id="a-featured-in" /> Featured</label>
+                <label><input type="checkbox" id="a-trending-in" /> Trending</label>
+                <label><input type="checkbox" id="a-draft-in" /> Save as draft (unpublished)</label>
+              </div>
+
+              <div style="display:flex;gap:10px;margin-top:10px;">
+                <button class="btn btn-primary" type="submit">💾 Save & Generate</button>
+                <button class="btn btn-ghost" type="button" onclick="ivResetArticle()">Clear</button>
+              </div>
+            </form>
+            <div style="margin-top:22px;">
+              <h3>📋 Generated code (paste into data/articles.js)</h3>
+              <div class="code-out" id="code-out">— save an article to see the snippet —</div>
+              <button class="mini-btn" type="button" onclick="ivCopyCode()" style="margin-top:8px;">Copy code</button>
             </div>
-            <input id="a-file" type="file" accept=".jpg,.jpeg,.png,.pdf" style="display:none;" onchange="ivHandleFile(event)" />
-            <div class="upload-prev" id="upload-prev"></div>
-            <div class="err-text" id="file-err"></div>
           </div>
-
-          <div class="field"><label>Body (HTML allowed)</label>
-            <textarea id="a-body-in" class="body" required placeholder="<p>Write your article…</p>"></textarea></div>
-
-          <label style="display:flex;gap:8px;align-items:center;font-size:0.88rem;margin-bottom:10px;">
-            <input type="checkbox" id="a-featured-in" /> Featured on home
-          </label>
-          <label style="display:flex;gap:8px;align-items:center;font-size:0.88rem;margin-bottom:16px;">
-            <input type="checkbox" id="a-trending-in" /> Trending on home
-          </label>
-
-          <div style="display:flex;gap:10px;">
-            <button class="btn btn-primary" type="button" onclick="ivSaveArticle(event)">💾 Generate & Save</button>
-            <button class="btn btn-ghost" type="button" onclick="ivResetEditor()">Clear</button>
+          <div>
+            <h3 style="margin-bottom:12px;">Manage Articles</h3>
+            <div class="admin-list" id="art-list"></div>
           </div>
-        </form>
-
-        <div style="margin-top:22px;">
-          <h3 style="margin-bottom:8px;">📋 Generated code (paste into data/articles.js)</h3>
-          <div class="code-out" id="code-out">— save an article to see the snippet —</div>
-          <button class="mini-btn" type="button" onclick="ivCopyCode()" style="margin-top:8px;">Copy code</button>
         </div>
       </div>
 
-      <!-- List -->
-      <div>
-        <h3 style="margin-bottom:12px;">📚 Existing (this browser)</h3>
-        <div class="admin-list" id="admin-list"></div>
-        <p class="chip" style="margin-top:10px;">Stored locally: <span id="draft-count">0</span> drafts</p>
+      <!-- NOTES TAB -->
+      <div class="tab-pane" id="pane-notes">
+        <div class="admin-grid">
+          <div class="form-card">
+            <h2 id="note-title">New Note</h2>
+            <form onsubmit="ivSaveNote(event)">
+              <input type="hidden" id="n-edit-id" />
+              <div class="field"><label>Title</label><input id="n-title-in" required placeholder="Note title" /></div>
+              <div class="admin-grid" style="gap:14px;">
+                <div class="field"><label>Category</label><select id="n-cat-in" required></select></div>
+                <div class="field"><label>Emoji</label><input id="n-emoji-in" value="📝" maxlength="4" /></div>
+              </div>
+              <div class="field"><label>Body (HTML allowed)</label><textarea id="n-body-in" class="body" required placeholder="<p>Short note…</p>"></textarea></div>
+              <div style="display:flex;gap:10px;">
+                <button class="btn btn-primary" type="submit">💾 Save</button>
+                <button class="btn btn-ghost" type="button" onclick="ivResetNote()">Clear</button>
+              </div>
+            </form>
+            <div style="margin-top:18px;"><h3>Generated code (paste into data/notes.js)</h3><div class="code-out" id="note-code"></div><button class="mini-btn" type="button" onclick="ivCopyNoteCode()" style="margin-top:8px;">Copy</button></div>
+          </div>
+          <div><h3 style="margin-bottom:12px;">Manage Notes</h3><div class="admin-list" id="note-list"></div></div>
+        </div>
+      </div>
+
+      <!-- PDFS TAB -->
+      <div class="tab-pane" id="pane-pdfs">
+        <div class="admin-grid">
+          <div class="form-card">
+            <h2 id="pdf-title">New Document</h2>
+            <form onsubmit="ivSavePdf(event)">
+              <input type="hidden" id="p-edit-id" />
+              <div class="field"><label>Title</label><input id="p-title-in" required placeholder="Document title" /></div>
+              <div class="field"><label>Description</label><input id="p-desc-in" required placeholder="What this PDF contains" /></div>
+              <div class="admin-grid" style="gap:14px;">
+                <div class="field"><label>Category</label><select id="p-cat-in" required></select></div>
+                <div class="field"><label>Thumbnail emoji</label><input id="p-thumb-in" value="📄" maxlength="4" /></div>
+              </div>
+              <div class="field"><label>Size label (e.g. "PDF · 12 pages")</label><input id="p-size-in" placeholder="PDF · 12 pages" /></div>
+              <div class="field">
+                <label>PDF file (pdf only, max 10MB)</label>
+                <div class="upload-zone" id="pdf-zone" onclick="document.getElementById('p-file').click()">Click to upload PDF</div>
+                <input id="p-file" type="file" accept=".pdf" style="display:none;" onchange="ivHandlePdf(event)" />
+                <div class="upload-prev" id="pdf-prev"></div>
+                <div class="err-text" id="pdf-err"></div>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <button class="btn btn-primary" type="submit">💾 Save</button>
+                <button class="btn btn-ghost" type="button" onclick="ivResetPdf()">Clear</button>
+              </div>
+            </form>
+            <div style="margin-top:18px;"><h3>Generated code (paste into data/pdfs.js)</h3><div class="code-out" id="pdf-code"></div><button class="mini-btn" type="button" onclick="ivCopyPdfCode()" style="margin-top:8px;">Copy</button></div>
+          </div>
+          <div><h3 style="margin-bottom:12px;">Manage Documents</h3><div class="admin-list" id="pdf-list"></div></div>
+        </div>
+      </div>
+
+      <!-- CATEGORIES TAB -->
+      <div class="tab-pane" id="pane-cats">
+        <div class="admin-grid">
+          <div class="form-card">
+            <h2>Add Category</h2>
+            <form onsubmit="ivAddCat(event)">
+              <div class="field"><label>ID (lowercase, no spaces)</label><input id="c-id-in" required placeholder="datascience" /></div>
+              <div class="admin-grid" style="gap:14px;">
+                <div class="field"><label>Name</label><input id="c-name-in" required placeholder="Data Science" /></div>
+                <div class="field"><label>Emoji</label><input id="c-emoji-in" value="📊" maxlength="4" /></div>
+              </div>
+              <button class="btn btn-primary" type="submit">➕ Add Category</button>
+            </form>
+          </div>
+          <div><h3 style="margin-bottom:12px;">All Categories</h3><div class="admin-list" id="cat-list"></div></div>
+        </div>
       </div>
     </div>
   </section>
@@ -98,172 +171,194 @@
 
   <script src="assets/js/components.js"></script>
   <script src="data/articles.js"></script>
+  <script src="data/notes.js"></script>
+  <script src="data/pdfs.js"></script>
   <script src="assets/js/app.js"></script>
+  <script src="assets/js/store.js"></script>
   <script>
-    const DRAFT_KEY = "iv_article_drafts";
-    const MAX_INLINE = 1.5 * 1024 * 1024; // ~1.5MB base64 inline threshold (#1)
-    let uploadedFile = null; // {kind:'image'|'pdf', dataUrl, name}
+    const S = window.InfoVibeStore;
+    let uploadedFile = null;   // {kind, dataUrl, name, path}
+    let uploadedPdf = null;
 
-    function getDrafts() { try { return JSON.parse(ivLSGet(DRAFT_KEY)) || []; } catch { return []; } }
-    function saveDrafts(d) { ivLSSet(DRAFT_KEY, JSON.stringify(d)); }
-
-    // login gate — MUST be admin (#3)
-    const gate = document.getElementById("login-gate");
-    const sess = ivGetSession();
-    if (!sess) {
-      gate.innerHTML = `<div class="form-card" style="text-align:center;">
-        <h2>Admin login required</h2><p class="sub">Log in to manage articles.</p>
-        <a class="btn btn-primary" href="login.html">Log In</a></div>`;
-    } else if (!ivIsAdmin(sess.email)) {
-      gate.innerHTML = `<div class="form-card" style="text-align:center;">
-        <h2>⛔ Access denied</h2>
-        <p class="sub">Your account (${esc(sess.email)}) is not an admin. Ask the site owner to add your email to <code>IV.adminEmails</code> in <code>app.js</code>.</p>
-        <a class="btn btn-ghost" href="index.html">Back to Home</a></div>`;
-    } else {
-      document.getElementById("admin-ui").style.display = "grid";
+    // login gate
+    (function gate() {
+      const sess = ivGetSession();
+      const g = document.getElementById("login-gate");
+      if (!sess) { g.innerHTML = `<div class="form-card" style="text-align:center;"><h2>Admin login required</h2><p class="sub">Log in to manage content.</p><a class="btn btn-primary" href="login.html">Log In</a></div>`; return; }
+      if (!ivIsAdmin(sess.email)) { g.innerHTML = `<div class="form-card" style="text-align:center;"><h2>⛔ Access denied</h2><p class="sub">Your account (${esc(sess.email)}) is not an admin.</p><a class="btn btn-ghost" href="index.html">Back</a></div>`; return; }
+      document.getElementById("admin-ui").style.display = "block";
       initAdmin();
-    }
+    })();
 
     function initAdmin() {
-      // populate category select
-      document.getElementById("a-cat-in").innerHTML =
-        window.INFOVIBE.CATEGORIES.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join("");
-      renderList();
+      const cats = S.getCategories();
+      ["a-cat-in","n-cat-in","p-cat-in"].forEach(sel => document.getElementById(sel).innerHTML = cats.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join(""));
+      renderStats(); renderArticleList(); renderNoteList(); renderPdfList(); renderCatList();
     }
 
-    // ---- File upload + validation ----
+    function renderStats() {
+      const arts = S.getArticles();
+      const pub = arts.filter(a => a.status !== "draft").length;
+      const drafts = arts.filter(a => a.status === "draft").length;
+      const imgs = arts.filter(a => a.media && a.media.kind === "image").length;
+      const cards = [
+        ["📚 Articles", arts.length], ["✅ Published", pub], ["📝 Drafts", drafts],
+        ["📄 Documents", S.getPdfs().length], ["🖼️ Images", imgs],
+        ["🗂️ Categories", S.getCategories().length], ["📒 Notes", S.getNotes().length]
+      ];
+      document.getElementById("stat-row").innerHTML = cards.map(c => `<div class="stat-card"><b>${c[1]}</b><span>${c[0]}</span></div>`).join("");
+    }
+
+    window.ivTab = function (name) {
+      document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
+      document.querySelectorAll(".tab-pane").forEach(p => p.classList.toggle("active", p.id === "pane-" + name));
+    };
+
+    // ---- secure file upload (image/pdf) ----
     function ivHandleFile(e) {
-      const errEl = document.getElementById("file-err");
-      const prev = document.getElementById("upload-prev");
-      errEl.textContent = "";
-      const f = e.target.files[0];
-      if (!f) return;
-      const allowed = ["image/jpeg", "image/png", "application/pdf"];
-      const maxBytes = 5 * 1024 * 1024;
-      if (!allowed.includes(f.type)) { errEl.textContent = "❌ Only JPG, PNG or PDF allowed."; return; }
-      if (f.size > maxBytes) { errEl.textContent = "❌ File too large (max 5MB)."; return; }
+      const errEl = document.getElementById("file-err"); const prev = document.getElementById("upload-prev"); errEl.textContent = "";
+      const f = e.target.files[0]; if (!f) return;
+      const allowed = ["image/jpeg","image/png","application/pdf"]; const max = 5*1024*1024;
+      if (!allowed.includes(f.type)) { errEl.textContent = "❌ Only JPG, PNG or PDF allowed."; f.value=""; return; }
+      if (f.size > max) { errEl.textContent = "❌ File too large (max 5MB)."; f.value=""; return; }
+      const safe = S.safeFileName(f.name, usedFileNames());
       const reader = new FileReader();
       reader.onload = () => {
         const isImg = f.type.startsWith("image/");
-        uploadedFile = { kind: isImg ? "image" : "pdf", dataUrl: reader.result, name: f.name };
-        prev.innerHTML = isImg
-          ? `<img src="${reader.result}" alt="preview" />`
-          : `<span class="file-chip">📄 ${esc(f.name)}</span>`;
+        uploadedFile = { kind: isImg ? "image" : "pdf", dataUrl: reader.result, name: safe, path: "assets/img/" + safe };
+        prev.innerHTML = isImg ? `<img src="${reader.result}" alt="preview" />` : `<span class="file-chip">📄 ${esc(safe)}</span>`;
       };
       reader.readAsDataURL(f);
     }
+    function usedFileNames() { return []; } // extension point for server-side dedup
 
-    // ---- Save / generate code ----
+    // ---- secure pdf upload ----
+    function ivHandlePdf(e) {
+      const errEl = document.getElementById("pdf-err"); const prev = document.getElementById("pdf-prev"); errEl.textContent = "";
+      const f = e.target.files[0]; if (!f) return;
+      if (f.type !== "application/pdf") { errEl.textContent = "❌ Only PDF allowed."; f.value=""; return; }
+      if (f.size > 10*1024*1024) { errEl.textContent = "❌ File too large (max 10MB)."; f.value=""; return; }
+      const safe = S.safeFileName(f.name, usedFileNames());
+      const reader = new FileReader();
+      reader.onload = () => { uploadedPdf = { dataUrl: reader.result, name: safe, path: "assets/docs/" + safe }; prev.innerHTML = `<span class="file-chip">📄 ${esc(safe)}</span>`; };
+      reader.readAsDataURL(f);
+    }
+
+    // ---- ARTICLES ----
     async function ivSaveArticle(e) {
       e.preventDefault();
       const id = document.getElementById("a-edit-id").value ||
-        document.getElementById("a-title-in").value.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-      const tags = document.getElementById("a-tags-in").value.split(",").map(t => t.trim()).filter(Boolean);
-      // store draft locally (media kept with full dataUrl for small files)
+        document.getElementById("a-title-in").value.trim().toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+      const refsRaw = document.getElementById("a-refs-in").value.trim();
+      const references = refsRaw ? refsRaw.split("\n").map(l => { const [label,url] = l.split("|"); return { label: (label||"").trim(), url: (url||"").trim() }; }).filter(r => r.url) : [];
       const art = {
-        id,
+        id, slug: id,
         title: document.getElementById("a-title-in").value.trim(),
         excerpt: document.getElementById("a-excerpt-in").value.trim(),
         category: document.getElementById("a-cat-in").value,
-        tags,
+        tags: document.getElementById("a-tags-in").value.split(",").map(t=>t.trim()).filter(Boolean),
         author: document.getElementById("a-author-in").value.trim(),
-        date: new Date().toISOString().slice(0, 10),
-        readTime: parseInt(document.getElementById("a-read-in").value) || 5,
-        emoji: document.getElementById("a-emoji-in").value || "📄",
-        cover: uploadedFile && uploadedFile.kind === "image" ? "🖼️" : (document.getElementById("a-emoji-in").value || "📄"),
+        date: new Date().toISOString().slice(0,10),
+        updated: new Date().toISOString().slice(0,10),
+        readTime: parseInt(document.getElementById("a-read-in").value)||5,
+        emoji: document.getElementById("a-emoji-in").value||"📄",
+        cover: document.getElementById("a-emoji-in").value||"📄",
         featured: document.getElementById("a-featured-in").checked,
         trending: document.getElementById("a-trending-in").checked,
-        media: uploadedFile
-          ? { kind: uploadedFile.kind, dataUrl: uploadedFile.dataUrl, name: uploadedFile.name,
-              path: "assets/img/" + id + "-" + uploadedFile.name.replace(/[^a-z0-9.\-_]/gi, "_") }
-          : null,
+        status: document.getElementById("a-draft-in").checked ? "draft" : "published",
+        references,
+        media: uploadedFile ? { kind: uploadedFile.kind, dataUrl: uploadedFile.dataUrl, name: uploadedFile.name, path: uploadedFile.path } : null,
         body: document.getElementById("a-body-in").value.trim()
       };
-      const drafts = getDrafts();
-      const i = drafts.findIndex(d => d.id === id);
-      if (i >= 0) drafts[i] = art; else drafts.push(art);
-      saveDrafts(drafts);
-      renderList();
-      // generate code snippet (compatible with data/articles.js)
-      const snippet = generateSnippet(art);
-      document.getElementById("code-out").textContent = snippet;
+      S.saveArticle(art); renderArticleList(); renderStats();
+      document.getElementById("code-out").textContent = S.articleSnippet(art);
       ivToast("Article saved locally ✓ copy the code to publish");
     }
-
-    function generateSnippet(a) {
-      let mediaLine = "";
-      if (a.media) {
-        const isLarge = a.media.dataUrl.length > MAX_INLINE;
-        if (isLarge) {
-          // large file: recommend saving to assets/img and using a path (#1)
-          mediaLine = `\n    // media (${a.media.kind}) too large to inline. Save the file to ${a.media.path}\n    // then use the path version below instead of dataUrl:\n    media: { kind: "${a.media.kind}", path: "${a.media.path}", name: "${a.media.name}" },`;
-        } else {
-          // small file: inline full base64 (no truncation) (#1)
-          mediaLine = `\n    media: { kind: "${a.media.kind}", dataUrl: ${JSON.stringify(a.media.dataUrl)}, name: "${a.media.name}" },`;
-        }
-      }
-      return `  {\n    id: "${a.id}",\n    title: ${JSON.stringify(a.title)},\n    excerpt: ${JSON.stringify(a.excerpt)},\n    category: "${a.category}",\n    tags: ${JSON.stringify(a.tags)},\n    author: ${JSON.stringify(a.author)},\n    date: "${a.date}",\n    readTime: ${a.readTime},\n    emoji: "${a.emoji}",\n    cover: "${a.cover}",\n    featured: ${a.featured},\n    trending: ${a.trending},${mediaLine}\n    body: \`${a.body.replace(/`/g, "\\`")}\`\n  },`;
-    }
-
-    function renderList() {
-      const drafts = getDrafts();
-      document.getElementById("draft-count").textContent = drafts.length;
-      const list = document.getElementById("admin-list");
-      if (!drafts.length) { list.innerHTML = `<p class="chip">No drafts yet.</p>`; return; }
-      list.innerHTML = drafts.map(d => `
+    function renderArticleList() {
+      const arts = S.getArticles();
+      document.getElementById("art-list").innerHTML = arts.length ? arts.map(d => `
         <div class="admin-row">
-          <div><div class="t">${esc(d.title)}</div><div class="m">${ivCat(d.category).name} · ${d.date}${d.media ? " · 📎" + d.media.kind : ""}</div></div>
+          <div><div class="t">${esc(d.title)}</div><div class="m">${ivCat(d.category).name} · ${d.date} · ${d.status==="draft"?"📝 Draft":(d.featured?"🔥 Featured":"")}${d.media?" · 📎"+d.media.kind:""}</div></div>
           <div class="acts">
-            <button class="mini-btn" onclick="ivEdit('${d.id}')">Edit</button>
-            <button class="mini-btn danger" onclick="ivDelete('${d.id}')">Delete</button>
+            <button class="mini-btn" onclick="ivEditArticle('${d.id}')">Edit</button>
+            <button class="mini-btn" onclick="ivTogglePublish('${d.id}')">${d.status==="draft"?"Publish":"Unpublish"}</button>
+            <button class="mini-btn danger" onclick="ivDeleteArticle('${d.id}')">Delete</button>
           </div>
-        </div>`).join("");
+        </div>`).join("") : `<p class="chip">No articles yet.</p>`;
     }
-
-    function ivEdit(id) {
-      const d = getDrafts().find(x => x.id === id); if (!d) return;
+    function ivEditArticle(id) {
+      const d = S.getArticle(id); if (!d) return;
       document.getElementById("a-edit-id").value = d.id;
       document.getElementById("a-title-in").value = d.title;
       document.getElementById("a-excerpt-in").value = d.excerpt;
       document.getElementById("a-cat-in").value = d.category;
-      document.getElementById("a-tags-in").value = (d.tags || []).join(", ");
+      document.getElementById("a-tags-in").value = (d.tags||[]).join(", ");
       document.getElementById("a-author-in").value = d.author;
       document.getElementById("a-read-in").value = d.readTime;
       document.getElementById("a-emoji-in").value = d.emoji;
+      document.getElementById("a-refs-in").value = (d.references||[]).map(r=>r.label+" | "+r.url).join("\n");
       document.getElementById("a-body-in").value = d.body;
       document.getElementById("a-featured-in").checked = !!d.featured;
       document.getElementById("a-trending-in").checked = !!d.trending;
-      document.getElementById("editor-title").textContent = "Edit: " + d.title;
-      if (d.media) {
-        uploadedFile = d.media;
-        document.getElementById("upload-prev").innerHTML = d.media.kind === "image"
-          ? `<img src="${d.media.dataUrl}" alt="preview" />` : `<span class="file-chip">📄 ${esc(d.media.name)}</span>`;
-      }
-      document.getElementById("code-out").textContent = generateSnippet(d);
+      document.getElementById("a-draft-in").checked = d.status === "draft";
+      document.getElementById("art-title").textContent = "Edit: " + d.title;
+      uploadedFile = d.media || null;
+      document.getElementById("upload-prev").innerHTML = d.media ? (d.media.kind==="image"?`<img src="${d.media.dataUrl}" alt="preview" />`:`<span class="file-chip">📄 ${esc(d.media.name)}</span>`) : "";
+      document.getElementById("code-out").textContent = S.articleSnippet(d);
     }
+    function ivTogglePublish(id) { const d = S.getArticle(id); if (!d) return; d.status = d.status==="draft"?"published":"draft"; S.saveArticle(d); renderArticleList(); renderStats(); ivToast("Status: "+d.status); }
+    function ivDeleteArticle(id) { if (!confirm("Delete this article?")) return; S.deleteArticle(id); ivResetArticle(); renderArticleList(); renderStats(); ivToast("Deleted"); }
+    function ivResetArticle() {
+      document.getElementById("a-edit-id").value=""; document.querySelector("#pane-articles form").reset();
+      uploadedFile=null; document.getElementById("upload-prev").innerHTML=""; document.getElementById("art-title").textContent="New Article";
+      document.getElementById("code-out").textContent="— save an article to see the snippet —";
+    }
+    function ivCopyCode() { const t=document.getElementById("code-out").textContent; if(navigator.clipboard)navigator.clipboard.writeText(t); ivToast("Code copied"); }
 
-    function ivDelete(id) {
-      if (!confirm("Delete this draft?")) return;
-      saveDrafts(getDrafts().filter(x => x.id !== id));
-      ivResetEditor();
-      renderList();
-      ivToast("Draft deleted");
+    // ---- NOTES ----
+    function ivSaveNote(e) {
+      e.preventDefault();
+      const id = document.getElementById("n-edit-id").value || document.getElementById("n-title-in").value.trim().toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+      const note = { id, title: document.getElementById("n-title-in").value.trim(), category: document.getElementById("n-cat-in").value, author: (ivGetSession()&&ivGetSession().name)||"InfoVibe Desk", date: new Date().toISOString().slice(0,10), emoji: document.getElementById("n-emoji-in").value||"📝", body: document.getElementById("n-body-in").value.trim() };
+      S.saveNote(note); renderNoteList(); renderStats();
+      document.getElementById("note-code").textContent = "  {\n    id: "+JSON.stringify(note.id)+",\n    title: "+JSON.stringify(note.title)+",\n    category: "+JSON.stringify(note.category)+",\n    author: "+JSON.stringify(note.author)+",\n    date: "+JSON.stringify(note.date)+",\n    emoji: "+JSON.stringify(note.emoji)+",\n    body: `"+String(note.body).replace(/`/g,"\\`")+"`\n  },";
+      ivToast("Note saved ✓");
     }
+    function renderNoteList() {
+      const notes = S.getNotes();
+      document.getElementById("note-list").innerHTML = notes.length ? notes.map(n => `
+        <div class="admin-row"><div><div class="t">${esc(n.title)}</div><div class="m">${ivCat(n.category).name} · ${n.date}</div></div>
+        <div class="acts"><button class="mini-btn" onclick="ivEditNote('${n.id}')">Edit</button><button class="mini-btn danger" onclick="ivDeleteNote('${n.id}')">Delete</button></div></div>`).join("") : `<p class="chip">No notes yet.</p>`;
+    }
+    function ivEditNote(id){ const n=S.getNote(id); if(!n)return; document.getElementById("n-edit-id").value=n.id; document.getElementById("n-title-in").value=n.title; document.getElementById("n-cat-in").value=n.category; document.getElementById("n-emoji-in").value=n.emoji; document.getElementById("n-body-in").value=n.body; document.getElementById("note-title").textContent="Edit: "+n.title; }
+    function ivDeleteNote(id){ if(!confirm("Delete this note?"))return; S.deleteNote(id); ivResetNote(); renderNoteList(); renderStats(); }
+    function ivResetNote(){ document.getElementById("n-edit-id").value=""; document.querySelector("#pane-notes form").reset(); document.getElementById("note-title").textContent="New Note"; }
+    function ivCopyNoteCode(){ const t=document.getElementById("note-code").textContent; if(navigator.clipboard)navigator.clipboard.writeText(t); ivToast("Copied"); }
 
-    function ivResetEditor() {
-      document.getElementById("a-edit-id").value = "";
-      document.querySelector("#admin-ui form").reset();
-      uploadedFile = null;
-      document.getElementById("upload-prev").innerHTML = "";
-      document.getElementById("editor-title").textContent = "New Article";
-      document.getElementById("code-out").textContent = "— save an article to see the snippet —";
+    // ---- PDFS ----
+    function ivSavePdf(e) {
+      e.preventDefault();
+      if (!uploadedPdf) { document.getElementById("pdf-err").textContent="❌ Upload a PDF first."; return; }
+      const id = document.getElementById("p-edit-id").value || document.getElementById("p-title-in").value.trim().toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+      const pdf = { id, title: document.getElementById("p-title-in").value.trim(), description: document.getElementById("p-desc-in").value.trim(), category: document.getElementById("p-cat-in").value, author: (ivGetSession()&&ivGetSession().name)||"InfoVibe Desk", uploadDate: new Date().toISOString().slice(0,10), sizeLabel: document.getElementById("p-size-in").value||"PDF", path: uploadedPdf.path, thumbnail: document.getElementById("p-thumb-in").value||"📄" };
+      S.savePdf(pdf); renderPdfList(); renderStats();
+      document.getElementById("pdf-code").textContent = "  {\n    id: "+JSON.stringify(pdf.id)+",\n    title: "+JSON.stringify(pdf.title)+",\n    description: "+JSON.stringify(pdf.description)+",\n    category: "+JSON.stringify(pdf.category)+",\n    author: "+JSON.stringify(pdf.author)+",\n    uploadDate: "+JSON.stringify(pdf.uploadDate)+",\n    sizeLabel: "+JSON.stringify(pdf.sizeLabel)+",\n    path: "+JSON.stringify(pdf.path)+",\n    thumbnail: "+JSON.stringify(pdf.thumbnail)+"\n  },";
+      ivToast("Document saved ✓");
     }
+    function renderPdfList() {
+      const pdfs = S.getPdfs();
+      document.getElementById("pdf-list").innerHTML = pdfs.length ? pdfs.map(p => `
+        <div class="admin-row"><div><div class="t">${esc(p.title)}</div><div class="m">${ivCat(p.category).name} · ${p.uploadDate} · 📄 ${esc(p.sizeLabel||"")}</div></div>
+        <div class="acts"><button class="mini-btn" onclick="ivEditPdf('${p.id}')">Edit</button><button class="mini-btn danger" onclick="ivDeletePdf('${p.id}')">Delete</button></div></div>`).join("") : `<p class="chip">No documents yet.</p>`;
+    }
+    function ivEditPdf(id){ const p=S.getPdf(id); if(!p)return; document.getElementById("p-edit-id").value=p.id; document.getElementById("p-title-in").value=p.title; document.getElementById("p-desc-in").value=p.description; document.getElementById("p-cat-in").value=p.category; document.getElementById("p-thumb-in").value=p.thumbnail; document.getElementById("p-size-in").value=p.sizeLabel||""; document.getElementById("pdf-title").textContent="Edit: "+p.title; uploadedPdf={path:p.path,name:p.path.split("/").pop()}; document.getElementById("pdf-prev").innerHTML=`<span class="file-chip">📄 ${esc(p.path.split("/").pop())}</span>`; }
+    function ivDeletePdf(id){ if(!confirm("Delete this document?"))return; S.deletePdf(id); ivResetPdf(); renderPdfList(); renderStats(); }
+    function ivResetPdf(){ document.getElementById("p-edit-id").value=""; document.querySelector("#pane-pdfs form").reset(); uploadedPdf=null; document.getElementById("pdf-prev").innerHTML=""; document.getElementById("pdf-title").textContent="New Document"; }
+    function ivCopyPdfCode(){ const t=document.getElementById("pdf-code").textContent; if(navigator.clipboard)navigator.clipboard.writeText(t); ivToast("Copied"); }
 
-    function ivCopyCode() {
-      const t = document.getElementById("code-out").textContent;
-      if (navigator.clipboard) navigator.clipboard.writeText(t);
-      ivToast("Code copied to clipboard");
-    }
+    // ---- CATEGORIES ----
+    function ivAddCat(e){ e.preventDefault(); const id=document.getElementById("c-id-in").value.trim().toLowerCase().replace(/[^a-z0-9]+/g,"-"); const name=document.getElementById("c-name-in").value.trim(); const emoji=document.getElementById("c-emoji-in").value||"📁"; if(!id||!name)return; S.addCategory({id,name,emoji}); initAdmin(); document.querySelector("#pane-cats form").reset(); ivToast("Category added ✓"); }
+    function renderCatList(){ const cats=S.getCategories(); document.getElementById("cat-list").innerHTML = cats.map(c=>`<div class="admin-row"><div><div class="t">${c.emoji} ${esc(c.name)}</div><div class="m">id: ${esc(c.id)}</div></div></div>`).join(""); }
   </script>
 </body>
 </html>

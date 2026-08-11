@@ -302,3 +302,18 @@ footer.site { border-top: 1px solid var(--border); margin-top: 60px; padding: 50
   .hero h1 { font-size: 2.1rem; }
   .hero-stats { gap: 20px; }
 }
+
+.related { margin: 40px 0 8px; }
+.related-title { font-size: 1.2rem; margin-bottom: 16px; color: var(--text); }
+.related-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; margin-bottom: 10px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; text-decoration: none; color: var(--text);
+  transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.related-card:hover { transform: translateY(-2px); border-color: var(--grad-a); box-shadow: 0 6px 20px rgba(99,102,241,.15); }
+.related-emoji { font-size: 1.8rem; line-height: 1; }
+.related-meta { display: flex; flex-direction: column; gap: 2px; }
+.related-meta b { font-size: .98rem; }
+.related-meta small { color: var(--muted); font-size: .8rem; }

@@ -7,14 +7,18 @@
   <url><loc>https://umee02199.github.io/infovibe/login.html</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
   <url><loc>https://umee02199.github.io/infovibe/signup.html</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
   <url><loc>https://umee02199.github.io/infovibe/profile.html</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://umee02199.github.io/infovibe/admin.html</loc><changefreq>monthly</changefreq><priority>0.2</priority></url>
   <url><loc>https://umee02199.github.io/infovibe/terms.html</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
   <url><loc>https://umee02199.github.io/infovibe/privacy.html</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
   <!-- Published articles (keep in sync with data/articles.js) -->
-  <url><loc>https://umee02199.github.io/infovibe/article.html?id=cyber-hygiene-2026</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://umee02199.github.io/infovibe/article.html?id=future-of-web-3d</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://umee02199.github.io/infovibe/article.html?id=ai-everyday-tools</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://umee02199.github.io/infovibe/article.html?id=design-systems-101</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://umee02199.github.io/infovibe/article.html?id=startup-seo-basics</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://umee02199.github.io/infovibe/article.html?id=remote-work-mindset</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://umee02199.github.io/infovibe/article.html?id=cyber-hygiene-2026</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://umee02199.github.io/infovibe/article.html?id=design-systems-that-scale</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://umee02199.github.io/infovibe/article.html?id=ai-content-pipeline</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://umee02199.github.io/infovibe/article.html?id=bootstrapping-zero-budget</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://umee02199.github.io/infovibe/article.html?id=focus-lifestyle</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://umee02199.github.io/infovibe/article.html?id=ai-vs-ai-cyber-battlefield</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://umee02199.github.io/infovibe/article.html?id=ai-trillion-club-nvidia-bet</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://umee02199.github.io/infovibe/article.html?id=open-vs-controlled-ai-startups</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://umee02199.github.io/infovibe/article.html?id=passwordless-passkeys-end-of-passwords</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://umee02199.github.io/infovibe/article.html?id=ai-agents-explained</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>

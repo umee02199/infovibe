@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>InfoVibe — Modern 3D Articles & Ideas on Tech, AI & Cyber Security</title>
-  <meta name="description" content="InfoVibe is a modern, 3D-powered article publishing platform. Read original articles on technology, artificial intelligence, cyber security, web design, startups, and productivity — beautifully, for free." />
-  <meta name="keywords" content="InfoVibe, tech articles, AI news, cybersecurity, web design, 3D web, startup guides, productivity, future of web, artificial intelligence trends" />
+  <title>InfoVibe — Modern 3D Knowledge Platform on Tech, AI & Cyber Security</title>
+  <meta name="description" content="InfoVibe is a free, 3D-powered knowledge platform. Read and publish articles, notes, and PDF documents on technology, AI, cyber security, design, business and lifestyle." />
+  <meta name="keywords" content="InfoVibe, knowledge base, tech articles, AI news, cybersecurity, web design, study notes, PDF documents, 3D web, startup guides, productivity" />
   <meta name="author" content="InfoVibe" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://umee02199.github.io/infovibe/" />
   <link rel="alternate" type="application/rss+xml" title="InfoVibe RSS" href="https://umee02199.github.io/infovibe/feed.xml" />
-  <!-- Search-engine verification (replace XXX with code from Google Search Console / Bing Webmaster after adding property) -->
   <meta name="google-site-verification" content="INFOVIBE_GOOGLE_VERIFY" />
   <meta name="msvalidate.01" content="INFOVIBE_BING_VERIFY" />
-  <meta property="og:title" content="InfoVibe — Modern 3D Articles & Ideas" />
-  <meta property="og:description" content="A modern, 3D-powered article publishing platform. Read. Explore. Translate. Connect." />
+  <meta property="og:title" content="InfoVibe — Modern 3D Knowledge Platform" />
+  <meta property="og:description" content="A free, 3D-powered knowledge platform. Read. Publish. Explore. Translate. Connect." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://umee02199.github.io/infovibe/" />
   <meta property="og:image" content="https://umee02199.github.io/infovibe/assets/img/og-default.png" />
@@ -32,21 +31,23 @@
   <section class="hero">
     <div class="container hero-grid">
       <div>
-        <span class="hero-badge">✦ Powered by 3D · 100% Free</span>
-        <h1>Stories that <span class="hl">come alive</span> in three dimensions.</h1>
-        <p class="lead">InfoVibe is a modern publishing platform where technology, security, design and ideas meet immersive, interactive design. Read. Explore. Translate. Connect.</p>
+        <span class="hero-badge">✦ Powered by 3D · 100% Free Knowledge Base</span>
+        <h1>Knowledge that <span class="hl">comes alive</span> in three dimensions.</h1>
+        <p class="lead">InfoVibe is a modern publishing platform where technology, security, design, notes and ideas meet immersive, interactive design. Read. Publish. Explore.</p>
         <div class="hero-cta">
           <a href="articles.html" class="btn btn-primary">📚 Explore Articles</a>
-          <a href="signup.html" class="btn btn-ghost">✨ Join InfoVibe</a>
+          <a href="pdfs.html" class="btn btn-ghost">📄 Documents</a>
+          <a href="notes.html" class="btn btn-ghost">📝 Notes</a>
         </div>
-        <div class="search-wrap">
+        <div class="search-wrap big">
           <span class="si">🔍</span>
-          <input id="home-search" type="text" placeholder="Search articles, tags, topics…" onkeydown="if(event.key==='Enter')location.href='articles.html?q='+encodeURIComponent(this.value)" />
+          <input id="home-search" type="search" placeholder="Search articles, notes, PDFs, topics…" oninput="ivHomeSearch()" onkeydown="if(event.key==='Enter'){location.href='search.html?q='+encodeURIComponent(this.value)}" />
+          <div class="search-suggest" id="search-suggest"></div>
         </div>
         <div class="hero-stats">
           <div><b id="stat-articles">0</b><span>Articles</span></div>
-          <div><b id="stat-cats">0</b><span>Categories</span></div>
-          <div><b>∞</b><span>Free to read</span></div>
+          <div><b id="stat-notes">0</b><span>Notes</span></div>
+          <div><b id="stat-pdfs">0</b><span>Documents</span></div>
         </div>
       </div>
       <div>
@@ -56,19 +57,52 @@
     </div>
   </section>
 
+  <!-- CATEGORIES (interactive 3D cards) -->
+  <section class="section container">
+    <h2 class="section-title">🗂️ Browse by Topic</h2>
+    <p class="section-sub">Jump straight into what interests you.</p>
+    <div class="cat-cards" id="cat-cards"></div>
+  </section>
+
   <!-- FEATURED -->
   <section class="section container">
-    <h2 class="section-title">🔥 Featured Articles</h2>
-    <p class="section-sub">Hand-picked reads our editors love this week.</p>
+    <div class="sec-head">
+      <div><h2 class="section-title">🔥 Featured Articles</h2><p class="section-sub">Hand-picked reads our editors love this week.</p></div>
+      <a class="see-all" href="articles.html">See all →</a>
+    </div>
     <div class="grid grid-3" id="featured-grid"></div>
   </section>
 
-  <!-- TRENDING CATEGORIES -->
+  <!-- LATEST + POPULAR -->
+  <section class="section container two-col">
+    <div>
+      <h2 class="section-title">🆕 Latest Articles</h2>
+      <p class="section-sub">Fresh from the editors.</p>
+      <div class="list-rows" id="latest-list"></div>
+    </div>
+    <div>
+      <h2 class="section-title">📈 Popular Now</h2>
+      <p class="section-sub">What readers are opening most.</p>
+      <div class="list-rows" id="popular-list"></div>
+    </div>
+  </section>
+
+  <!-- DOCUMENTS / PDFs -->
   <section class="section container">
-    <h2 class="section-title">📊 Trending Categories</h2>
-    <p class="section-sub">Jump straight into what's hot.</p>
-    <div class="pills" id="cat-pills"></div>
-    <div class="grid grid-2" id="trending-grid"></div>
+    <div class="sec-head">
+      <div><h2 class="section-title">📄 Documents & PDFs</h2><p class="section-sub">Recently published downloadable resources.</p></div>
+      <a class="see-all" href="pdfs.html">All documents →</a>
+    </div>
+    <div class="grid grid-3" id="pdf-grid"></div>
+  </section>
+
+  <!-- NOTES -->
+  <section class="section container">
+    <div class="sec-head">
+      <div><h2 class="section-title">📝 Study Notes</h2><p class="section-sub">Quick, bite-sized reference notes.</p></div>
+      <a class="see-all" href="notes.html">All notes →</a>
+    </div>
+    <div class="grid grid-3" id="notes-grid"></div>
   </section>
 
   <div data-chrome-footer></div>
@@ -76,33 +110,107 @@
 
   <script src="assets/js/components.js"></script>
   <script src="data/articles.js"></script>
+  <script src="data/notes.js"></script>
+  <script src="data/pdfs.js"></script>
   <script src="assets/js/app.js"></script>
+  <script src="assets/js/store.js"></script>
   <script src="assets/js/three-hero.js"></script>
   <script>
     (function () {
-      const { ARTICLES, CATEGORIES } = window.INFOVIBE;
-      document.getElementById("stat-articles").textContent = ARTICLES.length;
-      document.getElementById("stat-cats").textContent = CATEGORIES.length;
+      const S = window.InfoVibeStore;
+      const arts = S.getPublishedArticles();
+      const notes = S.getNotes();
+      const pdfs = S.getPdfs();
+      const cats = S.getCategories();
+
+      document.getElementById("stat-articles").textContent = arts.length;
+      document.getElementById("stat-notes").textContent = notes.length;
+      document.getElementById("stat-pdfs").textContent = pdfs.length;
+
+      const esc = window.esc || (s => String(s).replace(/[&<>"]/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m])));
+      const catOf = id => cats.find(c => c.id === id) || { name: id, emoji: "📄" };
 
       const card = a => `
-        <a class="card" href="article.html?id=${a.id}">
-          <div class="card-img"><div class="emoji">${a.cover}</div></div>
+        <a class="card tilt" href="article.html?id=${a.slug || a.id}">
+          <div class="card-img"><div class="emoji">${a.cover || "📄"}</div></div>
           <div class="card-body">
-            <div class="tag-row"><span class="tag">${ivCat(a.category).emoji} ${ivCat(a.category).name}</span></div>
-            <h3>${a.title}</h3>
-            <p>${a.excerpt}</p>
-            <div class="card-meta"><span>✍️ ${a.author}</span><span>🕒 ${a.readTime} min</span></div>
+            <div class="tag-row"><span class="tag">${catOf(a.category).emoji} ${esc(catOf(a.category).name)}</span></div>
+            <h3>${esc(a.title)}</h3>
+            <p>${esc(a.excerpt)}</p>
+            <div class="card-meta"><span>✍️ ${esc(a.author)}</span><span>🕒 ${a.readTime} min</span></div>
           </div>
         </a>`;
 
       document.getElementById("featured-grid").innerHTML =
-        ARTICLES.filter(a => a.featured).map(card).join("");
+        arts.filter(a => a.featured).slice(0, 6).map(card).join("") ||
+        arts.slice(0, 6).map(card).join("");
 
-      document.getElementById("cat-pills").innerHTML = CATEGORIES.map(c =>
-        `<a class="pill" href="articles.html?cat=${c.id}">${c.emoji} ${c.name}</a>`).join("");
+      // Latest (by date desc)
+      const latest = arts.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+      document.getElementById("latest-list").innerHTML = latest.map(a => `
+        <a class="row-item" href="article.html?id=${a.slug || a.id}">
+          <span class="row-emoji">${a.cover || "📄"}</span>
+          <span class="row-body"><b>${esc(a.title)}</b><small>${catOf(a.category).name} · ${esc(a.date)}</small></span>
+          <span class="row-arrow">→</span>
+        </a>`).join("");
 
-      document.getElementById("trending-grid").innerHTML =
-        ARTICLES.filter(a => a.trending).map(card).join("");
+      // Popular (by views)
+      const popular = S.popularArticles(5);
+      document.getElementById("popular-list").innerHTML = (popular.length ? popular : latest).map((a, i) => `
+        <a class="row-item" href="article.html?id=${a.slug || a.id}">
+          <span class="row-rank">${i + 1}</span>
+          <span class="row-body"><b>${esc(a.title)}</b><small>${S.getViews(a.id)} views</small></span>
+          <span class="row-arrow">→</span>
+        </a>`).join("");
+
+      // Categories (interactive cards)
+      document.getElementById("cat-cards").innerHTML = cats.map(c => `
+        <a class="cat-card tilt" href="articles.html?cat=${c.id}">
+          <span class="cat-emoji">${c.emoji}</span>
+          <b>${esc(c.name)}</b>
+          <small>${arts.filter(a => a.category === c.id).length} articles</small>
+        </a>`).join("");
+
+      // PDFs (recent)
+      const recentPdfs = pdfs.slice().sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate)).slice(0, 3);
+      document.getElementById("pdf-grid").innerHTML = recentPdfs.map(p => `
+        <a class="card tilt doc-card" href="${esc(p.path)}" target="_blank" rel="noopener">
+          <div class="card-img doc"><div class="emoji">${p.thumbnail || "📄"}</div></div>
+          <div class="card-body">
+            <div class="tag-row"><span class="tag">📄 ${esc(catOf(p.category).name)}</span></div>
+            <h3>${esc(p.title)}</h3>
+            <p>${esc(p.description)}</p>
+            <div class="card-meta"><span>📅 ${esc(p.uploadDate)}</span><span>⬇ Download</span></div>
+          </div>
+        </a>`).join("");
+
+      // Notes
+      document.getElementById("notes-grid").innerHTML = notes.slice(0, 3).map(n => `
+        <a class="card tilt note-card" href="notes.html#${n.id}">
+          <div class="card-img"><div class="emoji">${n.emoji || "📝"}</div></div>
+          <div class="card-body">
+            <div class="tag-row"><span class="tag">${catOf(n.category).emoji} ${esc(catOf(n.category).name)}</span></div>
+            <h3>${esc(n.title)}</h3>
+            <div class="card-meta"><span>✍️ ${esc(n.author)}</span><span>📝 Note</span></div>
+          </div>
+        </a>`).join("");
+
+      // Live search suggestions
+      const all = [
+        ...arts.map(a => ({ t: a.title, u: "article.html?id=" + (a.slug || a.id), e: a.cover || "📄" })),
+        ...notes.map(n => ({ t: n.title, u: "notes.html#" + n.id, e: n.emoji || "📝" })),
+        ...pdfs.map(p => ({ t: p.title, u: p.path, e: "📄" })),
+      ];
+      const box = document.getElementById("home-search");
+      const sug = document.getElementById("search-suggest");
+      window.ivHomeSearch = function () {
+        const q = box.value.trim().toLowerCase();
+        if (!q) { sug.style.display = "none"; return; }
+        const hits = all.filter(x => x.t.toLowerCase().includes(q)).slice(0, 6);
+        sug.innerHTML = hits.map(h => `<a href="${h.u}">${h.e} ${esc(h.t)}</a>`).join("") || `<div class="no">No matches</div>`;
+        sug.style.display = "block";
+      };
+      document.addEventListener("click", e => { if (!e.target.closest(".search-wrap")) sug.style.display = "none"; });
     })();
   </script>
 </body>

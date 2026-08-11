@@ -287,6 +287,97 @@ const ARTICLES = [
       <p><i>InfoVibe analysis. Themes reflect publicly reported August 2026 discussions; this is original commentary written for InfoVibe readers.</i></p>
     `,
   },
+  {
+    id: "passwordless-passkeys-end-of-passwords",
+    title: "Passwordless Auth & Passkeys: Is This the End of Passwords?",
+    excerpt: "Passkeys are moving from buzzword to default. We explain what they are, why they beat passwords, and what ordinary users and teams should do right now.",
+    category: "cyber",
+    tags: ["passwordless", "passkeys", "authentication", "security", "fido"],
+    author: "InfoVibe Desk",
+    date: "2026-08-11",
+    readTime: 6,
+    emoji: "🔑",
+    cover: "🔑",
+    featured: false,
+    trending: false,
+    body: `
+      <p>For thirty years the password has been the front door of the internet — and the weakest one. That is finally changing. <b>Passkeys</b>, built on the same cryptography behind hardware security keys, are now shipping as the default sign-in option across major platforms. The question is no longer "will passwords die" but "how fast."</p>
+
+      <h2>What a passkey actually is</h2>
+      <p>A passkey is a key pair stored on your device. The website keeps only the public half. When you sign in, your device proves it holds the private half using a fingerprint, face, or PIN — and the secret never leaves your phone or laptop. There is nothing for a phishing email to steal, because there is no password to type.</p>
+
+      <ul class="bullets">
+        <li><b>No shared secret.</b> The server never stores the part that proves who you are.</li>
+        <li><b>Phishing-resistant.</b> A passkey is bound to the real site, so a fake login page gets nothing usable.</li>
+        <li><b>Easy to use.</b> Unlock is usually a biometrics tap, not a 14-character string you forgot.</li>
+      </ul>
+
+      <h2>Why this matters now</h2>
+      <p>The biggest breaches of the past decade almost all traced back to passwords — reused, weak, or leaked. Passkeys remove that entire failure class in one move. For teams, that means fewer reset tickets and a smaller blast radius when one account is targeted.</p>
+
+      <blockquote>"The best password is the one you never have to remember — or type."</blockquote>
+
+      <h2>What you should do</h2>
+      <p>You do not need to wait for a mandate. Start today:</p>
+
+      <ul class="bullets">
+        <li>Turn on passkeys wherever they are offered (email, social, developer accounts).</li>
+        <li>Keep your device's screen lock strong — it is now the master key.</li>
+        <li>Keep one authenticator app as backup until every important account supports passkeys.</li>
+      </ul>
+
+      <h2>The honest catch</h2>
+      <p>Passkeys live on a device. Lose the device without a backup and recovery gets awkward. Sync (via your account's secure backup) solves most of this, but the habit of "one device, one key" takes adjusting. Still, the direction is clear: the password's days are numbered.</p>
+
+      <p><i>InfoVibe explainer. Concepts reflect widely documented industry standards (FIDO/WebAuthn); this is original educational writing, not a reproduction of any source.</i></p>
+    `,
+  },
+
+  {
+    id: "ai-agents-explained",
+    title: "AI Agents Explained: When Software Starts Doing the Work Itself",
+    excerpt: "Agents are the next step after chatbots — systems that plan, use tools, and act. Here is what they are, where they help, and where to be careful.",
+    category: "ai",
+    tags: ["ai agents", "automation", "llm", "productivity", "tools"],
+    author: "InfoVibe Desk",
+    date: "2026-08-11",
+    readTime: 7,
+    emoji: "🤖",
+    cover: "🤖",
+    featured: false,
+    trending: true,
+    body: `
+      <p>Chatbots answer. <b>Agents</b> act. That one-word difference is the story of this year in AI. An agent is a system that takes a goal, breaks it into steps, calls tools (search, code, calendars, APIs), checks the result, and loops until the job is done. The model is no longer just talking — it is working.</p>
+
+      <h2>From prompt to plan</h2>
+      <p>A chatbot waits for your next message. An agent, given "book the cheapest flight that fits my calendar," will look at the dates, compare options, check conflicts, and report back. The human sets the aim; the software runs the errands. This is why agents feel less like a search box and more like a junior colleague.</p>
+
+      <ul class="bullets">
+        <li><b>Planning:</b> the agent writes its own to-do list from your request.</li>
+        <li><b>Tools:</b> it can read the web, run code, and call services — not just generate text.</li>
+        <li><b>Looping:</b> it observes the outcome and retries when something fails.</li>
+      </ul>
+
+      <h2>Where agents genuinely help</h2>
+      <p>The wins are repetitive, multi-step, and rules-based: sorting inboxes, drafting reports from scattered data, running routine code checks, scheduling across time zones. Anything a careful intern could do in an afternoon is fair game.</p>
+
+      <blockquote>"The chatbot was a librarian. The agent is the librarian who also fetches, files, and follows up."</blockquote>
+
+      <h2>Where to be careful</h2>
+      <p>Autonomy is a double edge. An agent that can send emails or spend money needs guardrails: clear limits, a human in the loop for big actions, and logs you can audit. The failure mode is not malice — it is a confident agent doing the wrong thing efficiently.</p>
+
+      <ul class="bullets">
+        <li>Keep high-impact actions (payments, deletes, public posts) behind approval.</li>
+        <li>Start agents on read-only or sandbox tasks before granting real access.</li>
+        <li>Review the trail; treat the first runs as training, not production.</li>
+      </ul>
+
+      <h2>The takeaway</h2>
+      <p>Agents are not magic and not hype — they are the natural next layer: language models with hands. The teams that benefit are the ones who hand them narrow, well-bounded jobs and watch the first hundred runs closely. Done that way, agents trade grunt work for judgment, which is exactly the trade we want.</p>
+
+      <p><i>InfoVibe analysis. Themes reflect widely reported 2026 industry discussion; this is original commentary written for InfoVibe readers.</i></p>
+    `,
+  },
 ];
 
 // Make available to other scripts

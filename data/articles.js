@@ -167,7 +167,126 @@ const ARTICLES = [
       <p>Make distraction hard (phone in another room) and focus easy (one open doc).</p>
       <blockquote>You don't manage time. You manage attention. Time follows.</blockquote>
     `
-  }
+  },
+  {
+    id: "ai-vs-ai-cyber-battlefield",
+    title: "AI vs AI: The New Cybersecurity Battlefield",
+    excerpt: "Defenders and attackers are both deploying autonomous AI. We look at why the next wave of breaches will be machine-versus-machine — and what ordinary teams can do about it.",
+    category: "cyber",
+    tags: ["ai", "cybersecurity", "defense", "startups"],
+    author: "InfoVibe Desk",
+    date: "2026-08-11",
+    readTime: 7,
+    emoji: "🛡️",
+    cover: "🛡️",
+    featured: true,
+    trending: true,
+    body: `
+      <p>Cybersecurity has always been a race between the people who break things and the people who defend them. In 2026 that race took a sharp turn: both sides are now handing the keyboard to software. The headline trend this month is simple to state and hard to prepare for — <b>attacks and defenses are increasingly autonomous, and they meet in the middle without a human in the loop.</b></p>
+
+      <h2>Why this is happening now</h2>
+      <p>Two forces collided. On the attack side, language models made it cheap to write convincing phishing, tailor malware to a target, and probe systems at scale. On the defense side, security vendors realized that the only way to respond at machine speed is with machine speed of their own. The result is a market rushing to build <b>AI that fights AI</b>.</p>
+
+      <ul class="bullets">
+        <li>Investors are backing specialized startups: one new entrant just closed a large seed round to build models whose only job is spotting AI-generated attacks.</li>
+        <li>Established players are shipping "autonomous defense" features that investigate alerts, draft responses, and isolate compromised hosts without waiting for a click.</li>
+        <li>Even frontier labs are publishing defensive tooling, signaling that protecting infrastructure is now a shared competitive front.</li>
+      </ul>
+
+      <h2>What "AI vs AI" actually looks like</h2>
+      <p>Picture a login page. An attacker's model generates thousands of personalized messages trying to trick one employee. A defender's model watches the traffic, scores each attempt, and silently blocks the ones that look synthetic. The human security engineer only hears about it if something slips through. The battle is won or lost in milliseconds.</p>
+
+      <blockquote>"The window to respond used to be hours. Now it is the time it takes two models to finish a sentence."</blockquote>
+
+      <h2>Three things small teams should do</h2>
+      <p>You do not need a research lab to be resilient. The basics matter more than ever because automation punishes sloppiness instantly:</p>
+
+      <ul class="bullets">
+        <li><b>Turn on the boring defenses.</b> MFA everywhere, patched software, and least-privilege accounts block the majority of automated attempts.</li>
+        <li><b>Assume the email is synthetic.</b> Train staff to verify requests that feel odd through a second channel — models are very good at sounding normal.</li>
+        <li><b>Watch your own logs.</b> Cheap anomaly detection beats an expensive product you never configure.</li>
+      </ul>
+
+      <h2>The honest takeaway</h2>
+      <p>Autonomous offense will keep getting cheaper. The teams that survive are not the ones with the biggest model — they are the ones with the smallest attack surface and the fastest, simplest response. Defense in this new era is less about a magic box and more about refusing to be an easy target at machine scale.</p>
+
+      <p><i>InfoVibe analysis. Figures referenced reflect publicly reported industry moves in August 2026; this article is original commentary, not a reproduction of any single source.</i></p>
+    `,
+  },
+
+  {
+    id: "ai-trillion-club-nvidia-bet",
+    title: "The $3 Trillion AI Club and Nvidia's $500B Bet",
+    excerpt: "AI infrastructure is now a trillion-dollar line item. We break down what Nvidia's massive financing plan tells us about where the industry is headed.",
+    category: "business",
+    tags: ["ai", "markets", "hardware", "nvidia"],
+    author: "InfoVibe Desk",
+    date: "2026-08-11",
+    readTime: 6,
+    emoji: "📈",
+    cover: "📈",
+    featured: false,
+    trending: true,
+    body: `
+      <p>Every boom has a scoreboard, and in the AI era the scoreboard is market capitalization. This month the conversation shifted from "which AI app will win" to "who owns the rails" — and the rails are expensive. One chipmaker's plan to line up roughly half a trillion dollars in financing is the clearest signal yet that builders expect demand to stay enormous for years.</p>
+
+      <h2>Why chips are the bottleneck</h2>
+      <p>Training and serving large models is, at its core, a physics problem: you need extraordinary amounts of compute in the right places. That makes the companies that design and supply accelerators the gatekeepers of the whole industry. When one of them describes its processors as an "investable asset class," it is telling the market that silicon is now infrastructure like fiber or power plants.</p>
+
+      <ul class="bullets">
+        <li>Investors are hunting for the next members of the $3 trillion club among AI-adjacent stocks.</li>
+        <li>Analysts openly debate whether the spending is sustainable or a bubble waiting to deflate.</li>
+        <li>Enterprises are locking in capacity years ahead, betting that being compute-rich will decide who ships first.</li>
+      </ul>
+
+      <h2>Bubble or baseline?</h2>
+      <p>Both sides have a point. History says rapid infrastructure build-outs often overshoot before settling. But the underlying use case — models embedded in search, coding, customer support, and design — is real and growing. The risk is not that AI disappears; it is that the bill arrives before the productivity does.</p>
+
+      <blockquote>"We are not debating whether AI is useful. We are debating how long the receipt takes to come due."</blockquote>
+
+      <h2>What it means for you</h2>
+      <p>If you build products, the lesson is practical: <b>compute is a strategic cost, not a footnote.</b> Design for efficiency — smaller models, caching, and smart routing — because the price of brute force is now a board-level decision. If you invest, separate the companies that sell picks and shovels from the ones panning for gold; in most booms the suppliers are the steadier bet.</p>
+
+      <p><i>InfoVibe analysis. Market figures reflect publicly reported August 2026 commentary; this is original editorial, not a reproduction of any single publication.</i></p>
+    `,
+  },
+
+  {
+    id: "open-vs-controlled-ai-startups",
+    title: "Open vs Controlled AI: Why Some Startups Want Trainable, Non-Big-Tech Models",
+    excerpt: "A new wave of founders is betting that the future of AI is models you can actually teach — and that don't answer to a handful of giant companies.",
+    category: "ai",
+    tags: ["ai", "open-source", "startups", "policy"],
+    author: "InfoVibe Desk",
+    date: "2026-08-11",
+    readTime: 6,
+    emoji: "🤖",
+    cover: "🤖",
+    featured: false,
+    trending: false,
+    body: `
+      <p>The biggest AI models in the world live inside a small number of large companies. That concentration bothers a growing group of founders, and this month one of them described a blunt goal: build AI that is <b>trainable by its users and not controlled by a giant.</b> It is a technical ambition with a political edge.</p>
+
+      <h2>The control problem</h2>
+      <p>When a model is hosted and governed by one company, that company decides what it can say, what it costs, and what it is allowed to do. For many users — researchers, clinics, smaller businesses — that is a real limit. The counter-movement argues for models you can fine-tune on your own data, run where you choose, and modify without asking permission.</p>
+
+      <ul class="bullets">
+        <li>Classrooms are already adopting AI under new rules that favor transparency and local control.</li>
+        <li>Founders pitch "teachable" systems as safer for sensitive work like health and law.</li>
+        <li>Open releases let a wider community audit behavior instead of trusting a black box.</li>
+      </ul>
+
+      <h2>The trade-off nobody ignores</h2>
+      <p>Openness is not free. A model anyone can modify is also one anyone can misuse, and smaller teams rarely match the safety investment of a large lab. The honest debate is not "open good, closed bad" but "who should hold the levers, and who watches them."</p>
+
+      <blockquote>"The question is no longer can we build smart models. It is who gets to teach them, and who they answer to."</blockquote>
+
+      <h2>Where this lands</h2>
+      <p>Expect a split market: a few massive general models, and a long tail of specialized, adjustable ones owned by the people who use them. For the rest of us, that diversity is healthy — it means AI capability is not a single switch flipped by a handful of executives. The interesting startups of the next year will be the ones that make "teachable" actually easy.</p>
+
+      <p><i>InfoVibe analysis. Themes reflect publicly reported August 2026 discussions; this is original commentary written for InfoVibe readers.</i></p>
+    `,
+  },
 ];
 
 // Make available to other scripts

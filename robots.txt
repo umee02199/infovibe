@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Block admin panel from being indexed (demo tool)
+Disallow: /admin.html
+
+Sitemap: https://umee02199.github.io/infovibe/sitemap.xml

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Article Admin — InfoVibe</title>
+  <meta name="description" content="InfoVibe article admin: create, edit, delete articles and upload images/PDFs." />
+  <meta property="og:title" content="Article Admin — InfoVibe" />
+  <meta property="og:description" content="Create, edit and delete articles. Upload images (jpg/png) or PDFs (max 5MB)." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://umee02199.github.io/infovibe/admin.html" />
+  <meta property="og:image" content="https://umee02199.github.io/infovibe/assets/img/og-default.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div class="bg-blobs"><span></span><span></span><span></span></div>
+  <div data-chrome-nav></div>
+
+  <section class="section container">
+    <h1 class="section-title">✍️ Article Admin</h1>
+    <p class="section-sub">Create, edit and delete articles. Upload images (jpg/png) or PDFs (max 5MB).</p>
+
+    <div class="demo-banner">
+      <b>Demo mode:</b> This admin runs entirely in your browser (localStorage). Articles are NOT
+      published to the live site automatically — when you save, copy the generated code into
+      <code>data/articles.js</code> and re-deploy. No backend/database required.
+    </div>
+
+    <div id="login-gate"></div>
+
+    <div class="admin-grid" id="admin-ui" style="display:none;">
+      <!-- Editor -->
+      <div class="form-card">
+        <h2 id="editor-title">New Article</h2>
+        <form onsubmit="ivSaveArticle(event)">
+          <input type="hidden" id="a-edit-id" />
+          <div class="field"><label>Title</label><input id="a-title-in" required placeholder="Article title" /></div>
+          <div class="field"><label>Excerpt (short summary)</label><input id="a-excerpt-in" required placeholder="One-line summary" /></div>
+          <div class="admin-grid" style="gap:14px;">
+            <div class="field"><label>Category</label>
+              <select id="a-cat-in" required></select></div>
+            <div class="field"><label>Tags (comma separated)</label><input id="a-tags-in" placeholder="webgl, threejs" /></div>
+          </div>
+          <div class="admin-grid" style="gap:14px;">
+            <div class="field"><label>Author</label><input id="a-author-in" required placeholder="Author name" /></div>
+            <div class="field"><label>Read time (min)</label><input id="a-read-in" type="number" min="1" value="5" /></div>
+          </div>
+          <div class="field"><label>Cover emoji (e.g. 🌐)</label><input id="a-emoji-in" value="📄" maxlength="4" /></div>
+
+          <!-- Image / PDF upload with validation -->
+          <div class="field">
+            <label>Cover Image or PDF (jpg/png/pdf, max 5MB)</label>
+            <div class="upload-zone" id="upload-zone" onclick="document.getElementById('a-file').click()">
+              Click to upload image or PDF
+            </div>
+            <input id="a-file" type="file" accept=".jpg,.jpeg,.png,.pdf" style="display:none;" onchange="ivHandleFile(event)" />
+            <div class="upload-prev" id="upload-prev"></div>
+            <div class="err-text" id="file-err"></div>
+          </div>
+
+          <div class="field"><label>Body (HTML allowed)</label>
+            <textarea id="a-body-in" class="body" required placeholder="<p>Write your article…</p>"></textarea></div>
+
+          <label style="display:flex;gap:8px;align-items:center;font-size:0.88rem;margin-bottom:10px;">
+            <input type="checkbox" id="a-featured-in" /> Featured on home
+          </label>
+          <label style="display:flex;gap:8px;align-items:center;font-size:0.88rem;margin-bottom:16px;">
+            <input type="checkbox" id="a-trending-in" /> Trending on home
+          </label>
+
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-primary" type="button" onclick="ivSaveArticle(event)">💾 Generate & Save</button>
+            <button class="btn btn-ghost" type="button" onclick="ivResetEditor()">Clear</button>
+          </div>
+        </form>
+
+        <div style="margin-top:22px;">
+          <h3 style="margin-bottom:8px;">📋 Generated code (paste into data/articles.js)</h3>
+          <div class="code-out" id="code-out">— save an article to see the snippet —</div>
+          <button class="mini-btn" type="button" onclick="ivCopyCode()" style="margin-top:8px;">Copy code</button>
+        </div>
+      </div>
+
+      <!-- List -->
+      <div>
+        <h3 style="margin-bottom:12px;">📚 Existing (this browser)</h3>
+        <div class="admin-list" id="admin-list"></div>
+        <p class="chip" style="margin-top:10px;">Stored locally: <span id="draft-count">0</span> drafts</p>
+      </div>
+    </div>
+  </section>
+
+  <div data-chrome-footer></div>
+  <div data-chrome-floating></div>
+
+  <script src="assets/js/components.js"></script>
+  <script src="data/articles.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    const DRAFT_KEY = "iv_article_drafts";
+    const MAX_INLINE = 1.5 * 1024 * 1024; // ~1.5MB base64 inline threshold (#1)
+    let uploadedFile = null; // {kind:'image'|'pdf', dataUrl, name}
+
+    function getDrafts() { try { return JSON.parse(ivLSGet(DRAFT_KEY)) || []; } catch { return []; } }
+    function saveDrafts(d) { ivLSSet(DRAFT_KEY, JSON.stringify(d)); }
+
+    // login gate — MUST be admin (#3)
+    const gate = document.getElementById("login-gate");
+    const sess = ivGetSession();
+    if (!sess) {
+      gate.innerHTML = `<div class="form-card" style="text-align:center;">
+        <h2>Admin login required</h2><p class="sub">Log in to manage articles.</p>
+        <a class="btn btn-primary" href="login.html">Log In</a></div>`;
+    } else if (!ivIsAdmin(sess.email)) {
+      gate.innerHTML = `<div class="form-card" style="text-align:center;">
+        <h2>⛔ Access denied</h2>
+        <p class="sub">Your account (${esc(sess.email)}) is not an admin. Ask the site owner to add your email to <code>IV.adminEmails</code> in <code>app.js</code>.</p>
+        <a class="btn btn-ghost" href="index.html">Back to Home</a></div>`;
+    } else {
+      document.getElementById("admin-ui").style.display = "grid";
+      initAdmin();
+    }
+
+    function initAdmin() {
+      // populate category select
+      document.getElementById("a-cat-in").innerHTML =
+        window.INFOVIBE.CATEGORIES.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join("");
+      renderList();
+    }
+
+    // ---- File upload + validation ----
+    function ivHandleFile(e) {
+      const errEl = document.getElementById("file-err");
+      const prev = document.getElementById("upload-prev");
+      errEl.textContent = "";
+      const f = e.target.files[0];
+      if (!f) return;
+      const allowed = ["image/jpeg", "image/png", "application/pdf"];
+      const maxBytes = 5 * 1024 * 1024;
+      if (!allowed.includes(f.type)) { errEl.textContent = "❌ Only JPG, PNG or PDF allowed."; return; }
+      if (f.size > maxBytes) { errEl.textContent = "❌ File too large (max 5MB)."; return; }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const isImg = f.type.startsWith("image/");
+        uploadedFile = { kind: isImg ? "image" : "pdf", dataUrl: reader.result, name: f.name };
+        prev.innerHTML = isImg
+          ? `<img src="${reader.result}" alt="preview" />`
+          : `<span class="file-chip">📄 ${esc(f.name)}</span>`;
+      };
+      reader.readAsDataURL(f);
+    }
+
+    // ---- Save / generate code ----
+    async function ivSaveArticle(e) {
+      e.preventDefault();
+      const id = document.getElementById("a-edit-id").value ||
+        document.getElementById("a-title-in").value.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const tags = document.getElementById("a-tags-in").value.split(",").map(t => t.trim()).filter(Boolean);
+      // store draft locally (media kept with full dataUrl for small files)
+      const art = {
+        id,
+        title: document.getElementById("a-title-in").value.trim(),
+        excerpt: document.getElementById("a-excerpt-in").value.trim(),
+        category: document.getElementById("a-cat-in").value,
+        tags,
+        author: document.getElementById("a-author-in").value.trim(),
+        date: new Date().toISOString().slice(0, 10),
+        readTime: parseInt(document.getElementById("a-read-in").value) || 5,
+        emoji: document.getElementById("a-emoji-in").value || "📄",
+        cover: uploadedFile && uploadedFile.kind === "image" ? "🖼️" : (document.getElementById("a-emoji-in").value || "📄"),
+        featured: document.getElementById("a-featured-in").checked,
+        trending: document.getElementById("a-trending-in").checked,
+        media: uploadedFile
+          ? { kind: uploadedFile.kind, dataUrl: uploadedFile.dataUrl, name: uploadedFile.name,
+              path: "assets/img/" + id + "-" + uploadedFile.name.replace(/[^a-z0-9.\-_]/gi, "_") }
+          : null,
+        body: document.getElementById("a-body-in").value.trim()
+      };
+      const drafts = getDrafts();
+      const i = drafts.findIndex(d => d.id === id);
+      if (i >= 0) drafts[i] = art; else drafts.push(art);
+      saveDrafts(drafts);
+      renderList();
+      // generate code snippet (compatible with data/articles.js)
+      const snippet = generateSnippet(art);
+      document.getElementById("code-out").textContent = snippet;
+      ivToast("Article saved locally ✓ copy the code to publish");
+    }
+
+    function generateSnippet(a) {
+      let mediaLine = "";
+      if (a.media) {
+        const isLarge = a.media.dataUrl.length > MAX_INLINE;
+        if (isLarge) {
+          // large file: recommend saving to assets/img and using a path (#1)
+          mediaLine = `\n    // media (${a.media.kind}) too large to inline. Save the file to ${a.media.path}\n    // then use the path version below instead of dataUrl:\n    media: { kind: "${a.media.kind}", path: "${a.media.path}", name: "${a.media.name}" },`;
+        } else {
+          // small file: inline full base64 (no truncation) (#1)
+          mediaLine = `\n    media: { kind: "${a.media.kind}", dataUrl: ${JSON.stringify(a.media.dataUrl)}, name: "${a.media.name}" },`;
+        }
+      }
+      return `  {\n    id: "${a.id}",\n    title: ${JSON.stringify(a.title)},\n    excerpt: ${JSON.stringify(a.excerpt)},\n    category: "${a.category}",\n    tags: ${JSON.stringify(a.tags)},\n    author: ${JSON.stringify(a.author)},\n    date: "${a.date}",\n    readTime: ${a.readTime},\n    emoji: "${a.emoji}",\n    cover: "${a.cover}",\n    featured: ${a.featured},\n    trending: ${a.trending},${mediaLine}\n    body: \`${a.body.replace(/`/g, "\\`")}\`\n  },`;
+    }
+
+    function renderList() {
+      const drafts = getDrafts();
+      document.getElementById("draft-count").textContent = drafts.length;
+      const list = document.getElementById("admin-list");
+      if (!drafts.length) { list.innerHTML = `<p class="chip">No drafts yet.</p>`; return; }
+      list.innerHTML = drafts.map(d => `
+        <div class="admin-row">
+          <div><div class="t">${esc(d.title)}</div><div class="m">${ivCat(d.category).name} · ${d.date}${d.media ? " · 📎" + d.media.kind : ""}</div></div>
+          <div class="acts">
+            <button class="mini-btn" onclick="ivEdit('${d.id}')">Edit</button>
+            <button class="mini-btn danger" onclick="ivDelete('${d.id}')">Delete</button>
+          </div>
+        </div>`).join("");
+    }
+
+    function ivEdit(id) {
+      const d = getDrafts().find(x => x.id === id); if (!d) return;
+      document.getElementById("a-edit-id").value = d.id;
+      document.getElementById("a-title-in").value = d.title;
+      document.getElementById("a-excerpt-in").value = d.excerpt;
+      document.getElementById("a-cat-in").value = d.category;
+      document.getElementById("a-tags-in").value = (d.tags || []).join(", ");
+      document.getElementById("a-author-in").value = d.author;
+      document.getElementById("a-read-in").value = d.readTime;
+      document.getElementById("a-emoji-in").value = d.emoji;
+      document.getElementById("a-body-in").value = d.body;
+      document.getElementById("a-featured-in").checked = !!d.featured;
+      document.getElementById("a-trending-in").checked = !!d.trending;
+      document.getElementById("editor-title").textContent = "Edit: " + d.title;
+      if (d.media) {
+        uploadedFile = d.media;
+        document.getElementById("upload-prev").innerHTML = d.media.kind === "image"
+          ? `<img src="${d.media.dataUrl}" alt="preview" />` : `<span class="file-chip">📄 ${esc(d.media.name)}</span>`;
+      }
+      document.getElementById("code-out").textContent = generateSnippet(d);
+    }
+
+    function ivDelete(id) {
+      if (!confirm("Delete this draft?")) return;
+      saveDrafts(getDrafts().filter(x => x.id !== id));
+      ivResetEditor();
+      renderList();
+      ivToast("Draft deleted");
+    }
+
+    function ivResetEditor() {
+      document.getElementById("a-edit-id").value = "";
+      document.querySelector("#admin-ui form").reset();
+      uploadedFile = null;
+      document.getElementById("upload-prev").innerHTML = "";
+      document.getElementById("editor-title").textContent = "New Article";
+      document.getElementById("code-out").textContent = "— save an article to see the snippet —";
+    }
+
+    function ivCopyCode() {
+      const t = document.getElementById("code-out").textContent;
+      if (navigator.clipboard) navigator.clipboard.writeText(t);
+      ivToast("Code copied to clipboard");
+    }
+  </script>
+</body>
+</html>

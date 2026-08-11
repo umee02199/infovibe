@@ -74,6 +74,10 @@
     }
     function applyArticleSEO(art, url) {
       ivSetMeta('meta[name="description"]', "name", art.excerpt);
+      // dynamic canonical <link> per article (create if missing)
+      let can = document.head.querySelector('link[rel="canonical"]');
+      if (!can) { can = document.createElement("link"); can.rel = "canonical"; document.head.appendChild(can); }
+      can.href = url;
       ivSetMeta('meta[property="og:title"]', "property", art.title);
       ivSetMeta('meta[property="og:description"]', "property", art.excerpt);
       ivSetMeta('meta[property="og:url"]', "property", url);

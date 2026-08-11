@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up — InfoVibe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div class="bg-blobs"><span></span><span></span><span></span></div>
+  <div data-chrome-nav></div>
+  <div class="auth-wrap">
+    <div class="form-card">
+      <h2>Join InfoVibe ✨</h2>
+      <p class="sub">Create your free account in seconds.</p>
+      <form onsubmit="ivDoSignup(event)">
+        <div class="field"><label>Full Name</label><input id="s-name" required placeholder="Your name" /></div>
+        <div class="field"><label>Email</label><input id="s-email" type="email" required placeholder="you@email.com" /></div>
+        <div class="field"><label>Password</label><input id="s-pass" type="password" required placeholder="At least 6 characters" /></div>
+        <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center;">Create Account</button>
+      </form>
+      <div class="note-box"><b>Demo mode:</b> Accounts are stored only in this browser (localStorage). No server — don't reuse a real password.</div>
+      <div class="form-switch">Already have an account? <a class="link" href="login.html">Log in</a></div>
+    </div>
+  </div>
+  <div data-chrome-floating></div>
+  <script src="assets/js/components.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    window.ivDoSignup = function (e) {
+      e.preventDefault();
+      const r = ivSignup(
+        document.getElementById("s-name").value.trim(),
+        document.getElementById("s-email").value.trim(),
+        document.getElementById("s-pass").value
+      );
+      ivToast(r.msg);
+      if (r.ok) setTimeout(() => location.href = "profile.html", 700);
+    };
+    if (ivGetSession()) location.href = "profile.html";
+  </script>
+</body>
+</html>

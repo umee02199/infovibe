@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Articles — InfoVibe</title>
+  <meta name="description" content="Browse all InfoVibe articles. Filter by category, tag, or date." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div class="bg-blobs"><span></span><span></span><span></span></div>
+  <div data-chrome-nav></div>
+
+  <section class="section container">
+    <h1 class="section-title">📚 All Articles</h1>
+    <p class="section-sub">Browse the full library. Filter by category, tag, or date to find exactly what you need.</p>
+
+    <div class="filter-bar">
+      <input id="f-search" type="text" placeholder="🔍 Search…" style="flex:1;min-width:200px;" />
+      <select id="f-cat"><option value="">All Categories</option></select>
+      <select id="f-tag"><option value="">All Tags</option></select>
+      <select id="f-date">
+        <option value="">Any Date</option>
+        <option value="30">Last 30 days</option>
+        <option value="90">Last 90 days</option>
+        <option value="365">Last year</option>
+      </select>
+      <button class="btn btn-ghost" onclick="ivApplyFilters()">Apply</button>
+      <button class="btn btn-ghost" onclick="ivResetFilters()">Reset</button>
+    </div>
+
+    <div class="grid grid-3" id="articles-grid"></div>
+  </section>
+
+  <div data-chrome-footer></div>
+  <div data-chrome-floating></div>
+
+  <script src="assets/js/components.js"></script>
+  <script src="data/articles.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    const { ARTICLES, CATEGORIES } = window.INFOVIBE;
+    const params = new URLSearchParams(location.search);
+    const allTags = [...new Set(ARTICLES.flatMap(a => a.tags || []))].sort();
+
+    document.getElementById("f-cat").innerHTML += CATEGORIES.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join("");
+    document.getElementById("f-tag").innerHTML += allTags.map(t => `<option value="${t}">#${t}</option>`).join("");
+
+    // pre-fill from URL
+    if (params.get("cat")) document.getElementById("f-cat").value = params.get("cat");
+    if (params.get("q")) document.getElementById("f-search").value = params.get("q");
+    ["f-search","f-cat","f-tag","f-date"].forEach(id =>
+      document.getElementById(id).addEventListener("input", ivApplyFilters));
+
+    const card = a => `
+      <a class="card" href="article.html?id=${a.id}">
+        <div class="card-img"><div class="emoji">${a.cover}</div></div>
+        <div class="card-body">
+          <div class="tag-row"><span class="tag">${ivCat(a.category).emoji} ${ivCat(a.category).name}</span></div>
+          <h3>${a.title}</h3>
+          <p>${a.excerpt}</p>
+          <div class="card-meta"><span>✍️ ${a.author}</span><span>🗓️ ${ivFmtDate(a.date)}</span></div>
+        </div>
+      </a>`;
+
+    function ivApplyFilters() {
+      const q = document.getElementById("f-search").value.toLowerCase();
+      const cat = document.getElementById("f-cat").value;
+      const tag = document.getElementById("f-tag").value;
+      const days = parseInt(document.getElementById("f-date").value) || 0;
+      const now = Date.now();
+      const list = ARTICLES.filter(a => {
+        if (cat && a.category !== cat) return false;
+        if (tag && !(a.tags || []).includes(tag)) return false;
+        if (days && (now - new Date(a.date)) > days * 864e5) return false;
+        if (q && !(`${a.title} ${a.excerpt} ${(a.tags||[]).join(' ')}`.toLowerCase().includes(q))) return false;
+        return true;
+      });
+      const grid = document.getElementById("articles-grid");
+      grid.innerHTML = list.length ? list.map(card).join("") :
+        `<p class="empty">🤔 No articles match your filters. <a class="link" onclick="ivResetFilters()">Reset?</a></p>`;
+    }
+    function ivResetFilters() {
+      ["f-search","f-cat","f-tag","f-date"].forEach(id => document.getElementById(id).value = "");
+      ivApplyFilters();
+    }
+    ivApplyFilters();
+  </script>
+</body>
+</html>

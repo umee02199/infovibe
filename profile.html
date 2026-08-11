@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile — InfoVibe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div class="bg-blobs"><span></span><span></span><span></span></div>
+  <div data-chrome-nav></div>
+  <section class="section container">
+    <div id="profile-content"></div>
+  </section>
+  <div data-chrome-floating></div>
+  <script src="assets/js/components.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    const sess = ivGetSession();
+    const wrap = document.getElementById("profile-content");
+    if (!sess) {
+      wrap.innerHTML = `<div class="auth-wrap"><div class="form-card" style="text-align:center;">
+        <h2>Not logged in</h2><p class="sub">Please log in to view your profile.</p>
+        <a class="btn btn-primary" href="login.html">Log In</a></div></div>`;
+    } else {
+      const users = ivGetUsers();
+      const me = users[sess.email] || { bio: "" };
+      wrap.innerHTML = `
+        <div class="auth-wrap" style="margin-top:20px;">
+          <div class="form-card">
+            <div class="profile-head">
+              <div class="profile-avatar">${sess.name[0]}</div>
+              <div><h2 style="margin:0;">${sess.name}</h2><span class="chip">${sess.email}</span></div>
+            </div>
+            <form onsubmit="ivSaveProfile(event)">
+              <div class="field"><label>Display Name</label><input id="p-name" value="${esc(sess.name)}" /></div>
+              <div class="field"><label>Bio</label><textarea id="p-bio" rows="3" placeholder="Tell us about you">${esc(me.bio || "")}</textarea></div>
+              <button class="btn btn-primary" type="submit">Save Changes</button>
+            </form>
+            <div class="demo-banner"><b>Demo mode:</b> Profile data is stored only in this browser.</div>
+            <div class="form-switch"><button class="btn btn-ghost" onclick="ivLogout()">Log Out</button></div>
+          </div>
+        </div>`;
+    }
+    window.ivSaveProfile = function (e) {
+      e.preventDefault();
+      ivUpdateProfile(document.getElementById("p-name").value.trim(), document.getElementById("p-bio").value.trim());
+      ivToast("Profile saved ✓");
+      setTimeout(() => location.reload(), 700);
+    };
+  </script>
+</body>
+</html>

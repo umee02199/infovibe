@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InfoVibe — Modern 3D Articles & Ideas</title>
+  <meta name="description" content="InfoVibe is a modern, 3D-powered article publishing platform sharing ideas on technology, cyber security, design, AI and life." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div class="bg-blobs"><span></span><span></span><span></span></div>
+  <div data-chrome-nav></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="hero-badge">✦ Powered by 3D · 100% Free</span>
+        <h1>Stories that <span class="hl">come alive</span> in three dimensions.</h1>
+        <p class="lead">InfoVibe is a modern publishing platform where technology, security, design and ideas meet immersive, interactive design. Read. Explore. Translate. Connect.</p>
+        <div class="hero-cta">
+          <a href="articles.html" class="btn btn-primary">📚 Explore Articles</a>
+          <a href="signup.html" class="btn btn-ghost">✨ Join InfoVibe</a>
+        </div>
+        <div class="search-wrap">
+          <span class="si">🔍</span>
+          <input id="home-search" type="text" placeholder="Search articles, tags, topics…" onkeydown="if(event.key==='Enter')location.href='articles.html?q='+encodeURIComponent(this.value)" />
+        </div>
+        <div class="hero-stats">
+          <div><b id="stat-articles">0</b><span>Articles</span></div>
+          <div><b id="stat-cats">0</b><span>Categories</span></div>
+          <div><b>∞</b><span>Free to read</span></div>
+        </div>
+      </div>
+      <div>
+        <canvas id="hero-canvas"></canvas>
+        <div data-hero-fallback style="display:none;height:420px;border-radius:18px;background:var(--grad-soft);place-items:center;font-size:4rem;">🌐</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED -->
+  <section class="section container">
+    <h2 class="section-title">🔥 Featured Articles</h2>
+    <p class="section-sub">Hand-picked reads our editors love this week.</p>
+    <div class="grid grid-3" id="featured-grid"></div>
+  </section>
+
+  <!-- TRENDING CATEGORIES -->
+  <section class="section container">
+    <h2 class="section-title">📊 Trending Categories</h2>
+    <p class="section-sub">Jump straight into what's hot.</p>
+    <div class="pills" id="cat-pills"></div>
+    <div class="grid grid-2" id="trending-grid"></div>
+  </section>
+
+  <div data-chrome-footer></div>
+  <div data-chrome-floating></div>
+
+  <script src="assets/js/components.js"></script>
+  <script src="data/articles.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/three-hero.js"></script>
+  <script>
+    (function () {
+      const { ARTICLES, CATEGORIES } = window.INFOVIBE;
+      document.getElementById("stat-articles").textContent = ARTICLES.length;
+      document.getElementById("stat-cats").textContent = CATEGORIES.length;
+
+      const card = a => `
+        <a class="card" href="article.html?id=${a.id}">
+          <div class="card-img"><div class="emoji">${a.cover}</div></div>
+          <div class="card-body">
+            <div class="tag-row"><span class="tag">${ivCat(a.category).emoji} ${ivCat(a.category).name}</span></div>
+            <h3>${a.title}</h3>
+            <p>${a.excerpt}</p>
+            <div class="card-meta"><span>✍️ ${a.author}</span><span>🕒 ${a.readTime} min</span></div>
+          </div>
+        </a>`;
+
+      document.getElementById("featured-grid").innerHTML =
+        ARTICLES.filter(a => a.featured).map(card).join("");
+
+      document.getElementById("cat-pills").innerHTML = CATEGORIES.map(c =>
+        `<a class="pill" href="articles.html?cat=${c.id}">${c.emoji} ${c.name}</a>`).join("");
+
+      document.getElementById("trending-grid").innerHTML =
+        ARTICLES.filter(a => a.trending).map(card).join("");
+    })();
+  </script>
+</body>
+</html>

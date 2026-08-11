@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact & Booking — InfoVibe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div class="bg-blobs"><span></span><span></span><span></span></div>
+  <div data-chrome-nav></div>
+  <section class="section container">
+    <h1 class="section-title">Contact & Book a Consultation</h1>
+    <p class="section-sub">Send a message or book a slot. We'll get back to you on WhatsApp or email.</p>
+    <div class="grid grid-2">
+      <div class="form-card">
+        <h2>💬 Message Us</h2>
+        <p class="sub">Questions, feedback, or collaboration?</p>
+        <form onsubmit="ivSendMessage(event)">
+          <div class="field"><label>Name</label><input id="m-name" required placeholder="Your name" /></div>
+          <div class="field"><label>Email</label><input id="m-email" type="email" required placeholder="you@email.com" /></div>
+          <div class="field"><label>Message</label><textarea id="m-msg" rows="4" required placeholder="How can we help?"></textarea></div>
+          <button class="btn btn-primary" type="submit">Send Message</button>
+        </form>
+        <div class="note-box">📧 Or email us directly at <b>umee02199@gmail.com</b> · 💬 WhatsApp: tap the floating button.</div>
+      </div>
+      <div class="form-card">
+        <h2>📅 Book a Slot</h2>
+        <p class="sub">Request a consultation or appointment.</p>
+        <form onsubmit="ivBook(event)">
+          <div class="field"><label>Full Name</label><input id="b-name" required placeholder="Your name" /></div>
+          <div class="field"><label>Email</label><input id="b-email" type="email" required placeholder="you@email.com" /></div>
+          <div class="field"><label>Preferred Date</label><input id="b-date" type="date" required /></div>
+          <div class="field"><label>Preferred Time</label><select id="b-time" required><option>09:00</option><option>11:00</option><option>14:00</option><option>16:00</option><option>18:00</option></select></div>
+          <div class="field"><label>Topic</label><input id="b-topic" placeholder="What's it about?" /></div>
+          <button class="btn btn-primary" type="submit">Request Booking</button>
+        </form>
+        <div class="demo-banner"><b>Demo mode:</b> Bookings are saved in your browser only and a WhatsApp prefilled link is generated. No real calendar is connected.</div>
+      </div>
+    </div>
+  </section>
+  <div data-chrome-footer></div>
+  <div data-chrome-floating></div>
+  <script src="assets/js/components.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    const EMAIL = "umee02199@gmail.com", WA = "923266291140";
+    window.ivSendMessage = function (e) {
+      e.preventDefault();
+      const name = document.getElementById("m-name").value.trim();
+      const msg = document.getElementById("m-msg").value.trim();
+      const text = encodeURIComponent(`Hello InfoVibe! I'm ${name}. ${msg}`);
+      ivToast("Opening WhatsApp with your message…");
+      window.open(`https://wa.me/${WA}?text=${text}`, "_blank");
+    };
+    window.ivBook = function (e) {
+      e.preventDefault();
+      const name = document.getElementById("b-name").value.trim();
+      const date = document.getElementById("b-date").value;
+      const time = document.getElementById("b-time").value;
+      const topic = document.getElementById("b-topic").value.trim();
+      const bookings = JSON.parse(localStorage.getItem("iv_bookings") || "[]");
+      bookings.push({ name, date, time, topic, at: new Date().toISOString() });
+      localStorage.setItem("iv_bookings", JSON.stringify(bookings));
+      const text = encodeURIComponent(`Booking request from ${name} — ${date} at ${time}. Topic: ${topic || "General"}`);
+      ivToast("Booking saved locally ✓ Opening WhatsApp…");
+      window.open(`https://wa.me/${WA}?text=${text}`, "_blank");
+    };
+  </script>
+</body>
+</html>

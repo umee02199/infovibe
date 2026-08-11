@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Article — InfoVibe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div class="bg-blobs"><span></span><span></span><span></span></div>
+  <div data-chrome-nav></div>
+
+  <article class="section container">
+    <a href="articles.html" class="chip">← Back to Articles</a>
+    <div class="article-hero">
+      <div class="tag-row" id="a-tags"></div>
+      <h1 id="a-title">Loading…</h1>
+      <div class="article-meta">
+        <div class="author"><div class="author-avatar" id="a-avatar">?</div><div><b id="a-author">—</b><br><span id="a-date"></span></div></div>
+        <span class="chip" id="a-read"></span>
+      </div>
+      <div class="article-cover" id="a-cover">📄</div>
+    </div>
+
+    <div class="prose" id="a-body"></div>
+
+    <div class="share-row" id="a-share"></div>
+
+    <div class="comments">
+      <h3 style="margin-bottom:16px;">💬 Comments <span id="c-count" class="chip"></span></h3>
+      <div class="demo-banner"><b>Demo mode:</b> Comments are stored in your browser (localStorage) only. No server — they won't appear for other visitors.</div>
+      <form class="comment-form" id="c-form" onsubmit="ivSubmitComment(event)">
+        <input id="c-name" type="text" placeholder="Your name" required />
+        <textarea id="c-text" rows="3" placeholder="Share your thoughts…" required></textarea>
+        <button class="btn btn-primary" type="submit">Post Comment</button>
+      </form>
+      <div id="comments-list" style="margin-top:20px;"></div>
+    </div>
+  </article>
+
+  <div data-chrome-footer></div>
+  <div data-chrome-floating></div>
+
+  <script src="assets/js/components.js"></script>
+  <script src="data/articles.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const { ARTICLES } = window.INFOVIBE;
+    const id = new URLSearchParams(location.search).get("id");
+    const a = ARTICLES.find(x => x.id === id);
+    if (!a) { document.getElementById("a-title").textContent = "Article not found"; }
+    else {
+      document.title = a.title + " — InfoVibe";
+      document.getElementById("a-title").textContent = a.title;
+      document.getElementById("a-tags").innerHTML = `<span class="tag">${ivCat(a.category).emoji} ${ivCat(a.category).name}</span>` +
+        (a.tags || []).map(t => `<span class="tag">#${t}</span>`).join("");
+      document.getElementById("a-author").textContent = a.author;
+      document.getElementById("a-avatar").textContent = a.author[0];
+      document.getElementById("a-date").textContent = ivFmtDate(a.date);
+      document.getElementById("a-read").textContent = "🕒 " + a.readTime + " min read";
+      document.getElementById("a-cover").textContent = a.cover;
+      document.getElementById("a-body").innerHTML = a.body;
+
+      const url = location.href;
+      document.getElementById("a-share").innerHTML = `
+        <a class="share-btn" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(a.title)}" target="_blank">𝕏 Share</a>
+        <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank">📘 Facebook</a>
+        <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}" target="_blank">🔗 LinkedIn</a>
+        <a class="share-btn" href="https://wa.me/923266291140?text=${encodeURIComponent("Check this out: " + a.title + " " + url)}" target="_blank">💬 WhatsApp</a>`;
+
+      function refresh() {
+        const list = ivGetComments(a.id);
+        document.getElementById("c-count").textContent = "(" + list.length + ")";
+        ivRenderComments(a.id);
+      }
+      window.ivSubmitComment = function (e) {
+        e.preventDefault();
+        const name = document.getElementById("c-name").value.trim();
+        const text = document.getElementById("c-text").value.trim();
+        if (!name || !text) return;
+        ivAddComment(a.id, name, text);
+        document.getElementById("c-form").reset();
+        refresh();
+        ivToast("Comment posted (saved locally)");
+      };
+      refresh();
+    }
+    });
+  </script>
+</body>
+</html>

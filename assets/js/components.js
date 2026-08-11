@@ -17,6 +17,7 @@ const IV_CHROME = {
         <a href="articles.html">Articles</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
+        <a href="admin.html" data-admin-link>Admin</a>
         <a href="terms.html">Terms</a>
         <a href="privacy.html">Privacy</a>
       </nav>
@@ -54,6 +55,7 @@ const IV_CHROME = {
           <h4>Account</h4>
           <a href="login.html">Login</a>
           <a href="signup.html">Sign Up</a>
+          <a href="admin.html" data-admin-link>Admin</a>
           <a href="profile.html">My Profile</a>
         </div>
       </div>

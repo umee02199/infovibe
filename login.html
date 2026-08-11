@@ -4,6 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login — InfoVibe</title>
+  <meta name="description" content="Log in to your InfoVibe account to access your profile and saved content." />
+  <meta property="og:title" content="Login — InfoVibe" />
+  <meta property="og:description" content="Log in to your InfoVibe account." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://umee02199.github.io/infovibe/login.html" />
+  <meta property="og:image" content="https://umee02199.github.io/infovibe/assets/img/og-default.png" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
@@ -28,9 +35,9 @@
   <script src="assets/js/components.js"></script>
   <script src="assets/js/app.js"></script>
   <script>
-    window.ivDoLogin = function (e) {
+    window.ivDoLogin = async function (e) {
       e.preventDefault();
-      const r = ivLogin(document.getElementById("l-email").value.trim(), document.getElementById("l-pass").value);
+      const r = await ivLogin(document.getElementById("l-email").value.trim(), document.getElementById("l-pass").value);
       ivToast(r.msg);
       if (r.ok) setTimeout(() => location.href = "profile.html", 700);
     };

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>InfoVibe — Modern 3D Articles &amp; Ideas</title>
+    <link>https://umee02199.github.io/infovibe/</link>
+    <description>Original articles on technology, AI, cyber security, web design, startups, and productivity — beautifully, for free.</description>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 11 Aug 2026 12:00:00 +0000</lastBuildDate>
+    <atom:link href="https://umee02199.github.io/infovibe/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI Agents Explained: When Software Starts Doing the Work Itself</title>
+      <link>https://umee02199.github.io/infovibe/article.html?id=ai-agents-explained</link>
+      <guid>https://umee02199.github.io/infovibe/article.html?id=ai-agents-explained</guid>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 +0000</pubDate>
+      <category>AI &amp; ML</category>
+      <description>Agents are the next step after chatbots — systems that plan, use tools, and act. Here is what they are, where they help, and where to be careful.</description>
+    </item>
+    <item>
+      <title>Passwordless Auth &amp; Passkeys: Is This the End of Passwords?</title>
+      <link>https://umee02199.github.io/infovibe/article.html?id=passwordless-passkeys-end-of-passwords</link>
+      <guid>https://umee02199.github.io/infovibe/article.html?id=passwordless-passkeys-end-of-passwords</guid>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 +0000</pubDate>
+      <category>Cyber Security</category>
+      <description>Passkeys are moving from buzzword to default. We explain what they are, why they beat passwords, and what ordinary users and teams should do right now.</description>
+    </item>
+    <item>
+      <title>Open vs Controlled AI: Why Some Startups Want Trainable, Non-Big-Tech Models</title>
+      <link>https://umee02199.github.io/infovibe/article.html?id=open-vs-controlled-ai-startups</link>
+      <guid>https://umee02199.github.io/infovibe/article.html?id=open-vs-controlled-ai-startups</guid>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 +0000</pubDate>
+      <category>AI &amp; ML</category>
+      <description>A new wave of founders is betting that the future of AI is models you can actually teach — and that don't answer to a handful of giant companies.</description>
+    </item>
+    <item>
+      <title>The $3 Trillion AI Club and Nvidia's $500B Bet</title>
+      <link>https://umee02199.github.io/infovibe/article.html?id=ai-trillion-club-nvidia-bet</link>
+      <guid>https://umee02199.github.io/infovibe/article.html?id=ai-trillion-club-nvidia-bet</guid>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 +0000</pubDate>
+      <category>Business</category>
+      <description>AI infrastructure is now a trillion-dollar line item. We break down what Nvidia's massive financing plan tells us about where the industry is headed.</description>
+    </item>
+    <item>
+      <title>AI vs AI: The New Cybersecurity Battlefield</title>
+      <link>https://umee02199.github.io/infovibe/article.html?id=ai-vs-ai-cyber-battlefield</link>
+      <guid>https://umee02199.github.io/infovibe/article.html?id=ai-vs-ai-cyber-battlefield</guid>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 +0000</pubDate>
+      <category>Cyber Security</category>
+      <description>Defenders and attackers are both deploying autonomous AI. We look at why the next wave of breaches will be machine-versus-machine — and what ordinary teams can do about it.</description>
+    </item>
+    <item>
+      <title>Focus Deep Work in a Shallow World</title>
+      <link>https://umee02199.github.io/infovibe/article.html?id=focus-lifestyle</link>
+      <guid>https://umee02199.github.io/infovibe/article.html?id=focus-lifestyle</guid>
+      <pubDate>Sun, 27 Jul 2026 00:00:00 +0000</pubDate>
+      <category>Lifestyle</category>
+      <description>Attention is the last scarce resource. A field guide to protecting it — drawn from neuroscience, not hustle culture.</description>
+    </item>
+    <item>
+      <title>Bootstrapping on a Zero Budget</title>
+      <link>https://umee02199.github.io/infovibe/article.html?id=bootstrapping-zero-budget</link>
+      <guid>https://umee02199.github.io/infovibe/article.html?id=bootstrapping-zero-budget</guid>
+      <pubDate>Sun, 27 Jul 2026 00:00:00 +0000</pubDate>
+      <category>Business</category>
+      <description>You do not need capital to start. You need constraints that force clarity. A practical zero-budget playbook for solo founders.</description>
+    </item>
+    <item>
+      <title>Building an AI Content Pipeline Without Losing Your Voice</title>
+      <link>https://umee02199.github.io/infovibe/article.html?id=ai-content-pipeline</link>
+      <guid>https://umee02199.github.io/infovibe/article.html?id=ai-content-pipeline</guid>
+      <pubDate>Sun, 27 Jul 2026 00:00:00 +0000</pubDate>
+      <category>AI &amp; ML</category>
+      <description>AI can 10x your output — if you treat it as a co-author, not a replacement. A practical pipeline for solo creators.</description>
+    </item>
+    <item>
+      <title>Design Systems That Scale: Tokens Over Templates</title>
+      <link>https://umee02199.github.io/infovibe/article.html?id=design-systems-that-scale</link>
+      <guid>https://umee02199.github.io/infovibe/article.html?id=design-systems-that-scale</guid>
+      <pubDate>Sun, 27 Jul 2026 00:00:00 +0000</pubDate>
+      <category>Design</category>
+      <description>Why design tokens are the secret to a consistent UI across ten pages — and how to build your own in a weekend.</description>
+    </item>
+    <item>
+      <title>Cyber Hygiene 2026: 7 Habits That Actually Protect You</title>
+      <link>https://umee02199.github.io/infovibe/article.html?id=cyber-hygiene-2026</link>
+      <guid>https://umee02199.github.io/infovibe/article.html?id=cyber-hygiene-2026</guid>
+      <pubDate>Sun, 27 Jul 2026 00:00:00 +0000</pubDate>
+      <category>Cyber Security</category>
+      <description>Forget paranoia. These seven practical, low-effort habits block the vast majority of real-world attacks.</description>
+    </item>
+    <item>
+      <title>The Future of the Web Is 3D — And It's Already Here</title>
+      <link>https://umee02199.github.io/infovibe/article.html?id=future-of-web-3d</link>
+      <guid>https://umee02199.github.io/infovibe/article.html?id=future-of-web-3d</guid>
+      <pubDate>Sun, 27 Jul 2026 00:00:00 +0000</pubDate>
+      <category>Technology</category>
+      <description>How WebGL, Three.js and real-time rendering are turning flat pages into immersive experiences — and what it means for publishers.</description>
+    </item>
+  </channel>
+</rss>
